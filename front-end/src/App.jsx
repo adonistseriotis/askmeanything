@@ -4,17 +4,18 @@ import Welcome from './Welcome'
 import Button from '@material-ui/core/Button'
 import Login from './components/login';
 import SignUp from './components/signup';
+import {BrowserRouter, Switch, Route} from "react-router-dom"
 
 const names = ["Adonis", "Babis", "Nikos", "Angelos"];
 
 const App = () => {
     return (
-        <Grid>
-            {/* {names.map(item => <Welcome name={item} />)}
-            <Button color = 'secondary' variant = "outlined">
-                Hello</Button> */}
-            <SignUp />
-        </Grid>
+        <BrowserRouter>
+            <Switch>
+                <Route path="/login" component={Login}/>
+                <Route path="/signup" component={SignUp}/>
+            </Switch>
+        </BrowserRouter>
     );
 }
 
