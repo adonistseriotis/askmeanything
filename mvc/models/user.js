@@ -1,9 +1,9 @@
 const { ModelBase } = require('bookshelf');
 const bookshelf = require('../config/bookshelf');
+const BluePromise = require('bluebird');
+const bcrypt = BluePromise.promisifyAll(require('bcrypt'));
 
-const bcrypt = require('bcrypt');
-
-const User = bookshelf.model('User',{
+const User = bookshelf.model('User', {
         tableName:'users',
         initialize: function() {
             this.on('saving', this.hashPassword, this);
@@ -20,26 +20,6 @@ const User = bookshelf.model('User',{
                     resolve(hash);
                 });
             });
-        }
-    },
-    {
-        login: (username, password) => {
-            return new Promise( (resolve, reject) => {
-                console.log("Username:", username,"\nPassword:", password)
-                if(!username || !password)
-                    reject('Email and password are both required')
-
-                const loggedUser = new this({username: username})
-                    .fetch()
-                    .tap( async (user) => {
-                        const authenticate = await bcrypt.compare(password, user.password);
-                        
-                        if (!authenticate)
-                            reject('Invalid password!')
-                    });
-                resolve(loggedUser);
-            });
-
         }
     }
 );

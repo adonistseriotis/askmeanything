@@ -10,12 +10,19 @@ const ExtractJWT = require('passport-jwt').ExtractJwt;
 const JWT_SECRET = 'sheerosheero';
 
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 
 passport.use('signin', new LocalStrategy(
     (username, password, done) => {
-        return User.login(username, password)
-                .then(res => done(null, {message: `${res.username} is now authenticated.`}))
-                .catch(error => done(error, false))
+        
+        return new User({'username':username}).fetch()
+        .then(async user => {
+            const authenticate = await bcrypt.compare(password, user.get('password'));
+            console.log('Im here', authenticate)
+            authenticate ? done(null, {message: `${user.get('username')} is now authorized`}) : done(null,false, { message: 'Invalid password'});
+           
+        })
+        .catch(err => done(null,false, { message: 'No such user'}))
     }
 ))
 
