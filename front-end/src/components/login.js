@@ -2,8 +2,6 @@ import {React, useState} from 'react';
 import {Grid,Paper,Avatar,Typography,TextField,Button,Link} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import VpnKeyIcon from '@material-ui/icons/VpnKey';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import { login } from '../Services/axiosConfig';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,10 +43,10 @@ const Login = () => {
 
                 <Grid align='center'>
 
-                    <Avatar backgroundColor>
+                    <Avatar>
                         <VpnKeyIcon color = 'primary'/>
                     </Avatar>
-                    <Typography variant ='subtitle'>Sign in!</Typography>
+                    <Typography variant ='subtitle1'>Sign in!</Typography>
 
                 </Grid>
 
