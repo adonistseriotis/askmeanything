@@ -5,7 +5,7 @@ const User = require('../models/user');
 /* GET users listing. */
 router.get('/', async (req, res) => {
   await new User().fetchAll().then((users) => {
-    res.json({...users, login:User.login("babis","nikos")});
+    res.json(users);
   }).catch((error) => {
     console.log(error);
   });
