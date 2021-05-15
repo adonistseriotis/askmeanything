@@ -13,13 +13,13 @@ const axiosInstance = Axios.create({
 export async function login(username, password) {
     return await axiosInstance
         .post('/login', {'username': username, 'password': password})
-        // .then((response) => {
-        //     localStorage.setItem('token', response.data.token);
-        //     axiosInstance.defaults.headers['Authorization'] = 'JWT ' + response.data.token;
-        //     console.log("Successful login!", response)
-        //     return response
-        // })
-        // .catch(error => {throw error});
+        .then((response) => {
+            localStorage.setItem('token', response.data.token);
+            axiosInstance.defaults.headers['Authorization'] = 'JWT ' + response.data.token;
+            console.log("Successful login!", response)
+            return response
+        })
+        .catch(error => {throw error});
 }
 
 export async function signUp(username, password, email) {
