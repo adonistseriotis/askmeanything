@@ -2,8 +2,8 @@ import { Grid} from '@material-ui/core';
 import React from 'react';
 import Welcome from './Welcome'
 import Button from '@material-ui/core/Button'
-import Login from './components/login';
-import SignUp from './components/signup';
+import Login from './components/Login/login';
+import SignUp from './components/Signup/signup';
 import {BrowserRouter, Switch, Route} from "react-router-dom"
 
 const names = ["Adonis", "Babis", "Nikos", "Angelos"];

@@ -10,25 +10,25 @@ const axiosInstance = Axios.create({
     }
 });
 
-export function login(username, password) {
-    return axiosInstance
+export async function login(username, password) {
+    return await axiosInstance
         .post('/login', {'username': username, 'password': password})
-        .then((response) => {
-            localStorage.setItem('token', response.data.token);
-            axiosInstance.defaults.headers['Authorization'] = 'JWT ' + response.data.token;
-            console.log("Successful login!", response)
-            return response
-        })
-        .catch(error => console.log(error));
+        // .then((response) => {
+        //     localStorage.setItem('token', response.data.token);
+        //     axiosInstance.defaults.headers['Authorization'] = 'JWT ' + response.data.token;
+        //     console.log("Successful login!", response)
+        //     return response
+        // })
+        // .catch(error => {throw error});
 }
 
-export function signUp(username, password, email) {
-    return axiosInstance
+export async function signUp(username, password, email) {
+    return await axiosInstance
         .post('/signup', {'username':username, 'password': password, 'email':email})
         .then((response) => {
             return login(username,password);
         })
-        .catch(error => console.log(error));
+        .catch(error => {throw error});
 }
 
 export default axiosInstance;
