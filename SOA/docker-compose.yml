@@ -2,17 +2,18 @@ version: '3.8'
 services:
     
     db:
-        container_name: pg_container
+        container_name: pg_container_askmeanythang
         image: postgres
         restart: always
         environment:
-            POSTGRES_USER: ${THRIFTY_USER}
-            POSTGRES_PASSWORD: ${THRIFTY_PASSWORD}"
-            POSTGRES_DB: ${THRIFTY_DB_NAME}
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
         ports:
             - "54320:5432"
         volumes:
-            - $HOME/Documents/thrifty
+            - $HOME/Documents/SaaS/SOA/docker-volume
             - pg_data:/var/lib/postgresql/data/
+            - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
 volumes:
   pg_data:
