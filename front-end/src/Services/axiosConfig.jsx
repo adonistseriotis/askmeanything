@@ -19,7 +19,17 @@ export async function login(username, password) {
             console.log("Successful login!", response)
             return response
         })
-        .catch(error => {throw error});
+        .catch(error => {
+            if(!error.response){
+                throw {
+                    response: {
+                        status: "-1",
+                        statusText: "Network Error"
+                    }
+                }
+            }
+            throw error
+        });
 }
 
 export async function signUp(username, password, email) {

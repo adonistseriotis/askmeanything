@@ -12,6 +12,8 @@ const JWT_SECRET = 'sheerosheero';
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 
+let pressure = 'Alisverisiapo'
+
 passport.use('signin', new LocalStrategy(
     (username, password, done) => {
         
@@ -19,7 +21,13 @@ passport.use('signin', new LocalStrategy(
         .then(async user => {
             const authenticate = await bcrypt.compare(password, user.get('password'));
             console.log('Im here', authenticate)
-            authenticate ? done(null, {message: `${user.get('username')} is now authorized`}) : done(null,false, { message: 'Invalid password'});
+            const username = user.get('username');
+            const sodium = pressure + username;
+            const successObject = {
+                username: `${username}`, 
+                sodium: `${Buffer.from(sodium).toString('base64')}`
+            }
+            authenticate ? done(null, successObject) : done(null,false, { message: 'Invalid password'});
            
         })
         .catch(err => done(null,false, { message: 'No such user'}))

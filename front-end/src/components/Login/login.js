@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SignIn() {
+export default function Login() {
   const classes = useStyles();
 
   const [username, setUsername] = useState('');
@@ -68,6 +68,12 @@ export default function SignIn() {
 
   const handleSubmit = async () => {
     await login(username,password)
+    .then(response => {
+      if(response.statusText === 'OK'){
+        setError(false);
+        setErrorMessage("");
+      }
+    })
     .catch(error => {
         setError(true);
         setErrorMessage(error.response.statusText);
@@ -127,17 +133,23 @@ export default function SignIn() {
             className={classes.submit}
             onClick={handleSubmit}
           >
-            Sign In
+            <Typography>
+              Sign In
+            </Typography>
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link color="inherit" href="#" variant="body2">
-                Forgot password?
+              <Link color="inherit" href="#" variant="inherit">
+                <Typography>
+                  Forgot password?
+                </Typography>
               </Link>
             </Grid>
             <Grid item>
-              <Link color="inherit" href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link color="inherit" href="/signup" variant="inherit">
+                <Typography>
+                  {"Don't have an account? Sign Up"}
+                </Typography>
               </Link>
             </Grid>
           </Grid>

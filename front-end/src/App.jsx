@@ -1,21 +1,21 @@
-import { Grid} from '@material-ui/core';
 import React from 'react';
-import Welcome from './Welcome'
-import Button from '@material-ui/core/Button'
-import Login from './components/Login/login';
-import SignUp from './components/Signup/signup';
-import {BrowserRouter, Switch, Route} from "react-router-dom"
+import Router from './Routes/Router';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 const names = ["Adonis", "Babis", "Nikos", "Angelos"];
 
+const myTheme = createMuiTheme({
+    typography: {
+        "fontFamily": '"Roboto", "Helvetica", "Arial", sans-serif',
+        "fontSize": 14
+    }
+})
+
 const App = () => {
     return (
-        <BrowserRouter>
-            <Switch>
-                <Route path="/login" component={Login}/>
-                <Route path="/signup" component={SignUp}/>
-            </Switch>
-        </BrowserRouter>
+        <MuiThemeProvider theme={myTheme}>
+            <Router />
+        </MuiThemeProvider>
     );
 }
 
