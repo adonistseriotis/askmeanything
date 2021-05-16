@@ -113,6 +113,19 @@ const SignUp = () =>{
                         autoComplete="lname"
                         />
                     </Grid> */}
+                     <Grid item xs={12}>
+                        <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
+                        value={username}
+                        onChange={onUsernameChange}
+                        />
+                    </Grid>
                     <Grid item xs={12}>
                         <TextField
                         variant="outlined"
