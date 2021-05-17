@@ -4,6 +4,8 @@ const User = require('../models/user');
 
 const bcrypt = require('bcrypt');
 
+const signup = require('../services/signupService');
+
 router.post('/', async (req, res) => {
     const body = req.body;
     
@@ -11,17 +13,9 @@ router.post('/', async (req, res) => {
         return res.status(400).send({error: "Not valid input"});
     }
 
-    const newUser = User.forge({
-        username: body.username,
-        password: body.password,
-        email: body.email
-    }).save()
-    .then((savedModel) => 
-        res.status(201).send({...savedModel.toJSON(), message:"User successfully created!"}))
-    .catch((error) => {
-        console.log(error);
-        res.status(400).send({error: error.detail});
-    })
+    await signup(body)
+    .then(result => res.status(result.status).send({...result.data}))
+    .catch(error => res.status(error.status || 400).send({...error.data}))
 
 })
 
