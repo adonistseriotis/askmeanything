@@ -36,7 +36,8 @@ const LandingView = () => {
 
     return (
         <React.Fragment>
-        <NavigationBar />
+        <NavigationBar
+         />
         <Grid container className={classes.grid}>
             {testCards.map((row, count) => (
                 <Grid item key={'Grid' + count}>

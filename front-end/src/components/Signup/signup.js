@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { signUp } from '../../Services/axiosConfig';
+import NavigationBar from '../NavigationBar/NavigationBar'
 
 
 function Copyright() {
@@ -80,6 +81,8 @@ const SignUp = () =>{
     }
 
     return(
+        <Grid>
+        <NavigationBar/>
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
             <Avatar className={classes.avatar}>
@@ -177,6 +180,7 @@ const SignUp = () =>{
             <Copyright />
             </Box>
         </Container>
+        </Grid>
         );
 }
 

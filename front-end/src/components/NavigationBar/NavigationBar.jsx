@@ -1,29 +1,59 @@
 import React from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Grid, IconButton, Typography } from "@material-ui/core";
-import MoreIcon from '@material-ui/icons/MoreVert';
+import { Grid, IconButton, Typography , Button } from "@material-ui/core";
+import MenuIcon from '@material-ui/icons/Menu';
 
 import styles from './NavigationBarStyle.js';
 
 const useStyles = makeStyles(styles);
 
-const NavigationBar = () => {
+const NavigationBar = props => {
     const classes = useStyles();
 
-    return (
+    if (props.isAuth !== null)return (
         <Grid container justify="center" className={classes.root}>
             <Toolbar className={classes.toolbar}>
-                <Typography variant="h6">
+                <Button
+                    color="secondary"
+                    home
+                    href="/home">
+                    <Typography 
+                    variant="h6"
+                    >
                     Home
                 </Typography>
+                </Button>
                 <div className={classes.whitespace}/>
-                <IconButton className={classes.avatar}>
-                    <MoreIcon/>
+                <Button
+                    href="/login">
+                    Sign in
+                </Button>
+                <Button
+                    variant="contained"
+                    color="secondary"
+                    signUp
+                    href="/signup">
+                    
+                    Sign up
+                </Button>
+                <IconButton className={classes.menuButton}>
+                    <MenuIcon/>
                 </IconButton>
             </Toolbar>
         </Grid>
     )
+    else {
+        return (
+            <Grid container justify="center" className={classes.root}>
+            <Toolbar className={classes.toolbar}>
+                <IconButton className={classes.menuButton}>
+                    <MenuIcon/>
+                </IconButton>
+            </Toolbar>
+        </Grid>
+        )
+    }
 }
 
 export default NavigationBar;
