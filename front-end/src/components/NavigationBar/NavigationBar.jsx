@@ -11,7 +11,7 @@ const useStyles = makeStyles(styles);
 const NavigationBar = props => {
     const classes = useStyles();
 
-    if (props.isAuth !== null)return (
+    if (props.isAuth !== null) return (
         <Grid container justify="center" className={classes.root}>
             <Toolbar className={classes.toolbar}>
                 <Button
