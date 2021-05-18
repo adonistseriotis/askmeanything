@@ -1,6 +1,7 @@
 import { Typography,Container, TextField ,Button,makeStyles,Grid } from "@material-ui/core";
-import {React, useState} from "react";
+import {React, useState , Component } from "react";
 import NavigationBar from '../NavigationBar/NavigationBar';
+import CreatableSelect from 'react-select/creatable';
 
 const useStyles = makeStyles((theme) => ({
     field: {
@@ -13,10 +14,20 @@ const useStyles = makeStyles((theme) => ({
       }
 }));
 
+const data = [
+    {label: "sports", value: 1},
+    {label: "music", value: 2},
+    {label: "Tech", value: 3},
+    {label: "Sex", value: 4}
+]
+
 
 
 
 export default function CreateQuestion() {
+  
+    
+
     const classes = useStyles();
 
 
@@ -27,6 +38,11 @@ export default function CreateQuestion() {
     const [errorMessage, setErrorMessage] = useState('');
     const [error, setError] = useState(false);
 
+    const handleKeywordChange = (field,value) => {
+        setKeywords(value)
+        
+    }
+
     const onTitleChange = e => {
         setTitle(e.target.value);
     }
@@ -35,9 +51,6 @@ export default function CreateQuestion() {
         setContent(e.target.value);
     }
 
-    const onKeywordsChange = e => {
-        setKeywords(e.target.value);
-    }
 
     // const handleSubmit = async () => {
     //     await createQuestion(questionTitle,questionContent,questionKeywords)
@@ -69,7 +82,6 @@ export default function CreateQuestion() {
                     variant = "h6"
                     color = "secondary"
                     component = "h2"
-                    align = "center"
                 >
                     Add a new question!
                 </Typography>
@@ -96,23 +108,17 @@ export default function CreateQuestion() {
                     variant="outlined"
                     color = "secondary"
                     multiline
-                    rows = {8}
+                    rows = {12}
                     fullWidth
                     required
                     onChange={onContentChange}
                     />
-                    <TextField
-                    className = {classes.field}
-                    id = "keywords"
-                    label = "Keywords"
-                    name = "keywords"
-                    autoFocus
-                    variant="outlined"
-                    color = "secondary"
-                    multiline
-                    fullWidth
-                    required
-                    onChange={onKeywordsChange}
+                    <CreatableSelect
+                    isMulti
+                    isClearable
+                    options = {data}
+                    value ={keywords}
+                    onChange = {(value) => handleKeywordChange('data',value)}
                     />
                     <Button
                         className = {classes.submit}
@@ -124,7 +130,6 @@ export default function CreateQuestion() {
                     </Button>
                 </form>
             </Container>
-        </Grid> 
-            
+        </Grid>
     );
   }
