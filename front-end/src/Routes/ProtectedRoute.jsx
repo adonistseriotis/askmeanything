@@ -2,7 +2,7 @@ import React from "react";
 import { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import auth from "../Services/auth";
-import isAuthenticated from "../Services/auth";
+import { isAuthenticated } from "../Services/auth";
 
 const ProtectedRoute = ({path, component: Component, render, ...rest}) => {
     return (

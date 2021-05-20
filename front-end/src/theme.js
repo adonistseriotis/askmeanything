@@ -4,14 +4,23 @@ import green from '@material-ui/core/colors/green';
 import pink from '@material-ui/core/colors/pink';
 
 
-const theme = createMuiTheme({
-  palette: {
-    primary: purple,
-    secondary: green
+const myTheme = createMuiTheme({
+  typography: {
+      "fontFamily": '"Roboto", "Helvetica", "Arial", sans-serif',
+      "fontSize": 14
   },
-  status: {
-      danger: pink,
-  }
-});
+  palette: {
+      primary: {
+          main: '#3b3c36'
+        },
+      secondary: {
+          main: '#5a9367'
+      }
+    },
+    status: {
+        danger: pink,
+    }
+})
 
-export default theme;
+
+export default myTheme;

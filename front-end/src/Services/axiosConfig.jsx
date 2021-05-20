@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { getUsername } from './auth';
 
 const axiosInstance = Axios.create({
     baseURL: 'http://127.0.0.1:3000',
@@ -37,6 +38,18 @@ export async function signUp(username, password, email) {
         .post('/signup', {'username':username, 'password': password, 'email':email})
         .then((response) => {
             return login(username,password);
+        })
+        .catch(error => {throw error});
+}
+
+export async function createQuestion(title, body, keywords) {
+
+    const username = getUsername();
+    
+    return await axiosInstance
+        .post('/createquestion', {'title':title, 'body': body, 'username': username, 'keywords':keywords})
+        .then((response) => {
+            console.log(response)
         })
         .catch(error => {throw error});
 }

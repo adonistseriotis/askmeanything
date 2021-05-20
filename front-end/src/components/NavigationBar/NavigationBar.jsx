@@ -16,7 +16,6 @@ const NavigationBar = props => {
             <Toolbar className={classes.toolbar}>
                 <Button
                     color="secondary"
-                    home
                     href="/home">
                     <Typography 
                     variant="h6"
@@ -32,7 +31,6 @@ const NavigationBar = props => {
                 <Button
                     variant="contained"
                     color="secondary"
-                    signUp
                     href="/signup">
                     
                     Sign up
