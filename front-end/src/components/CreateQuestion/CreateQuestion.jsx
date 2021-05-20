@@ -139,7 +139,7 @@ export default function CreateQuestion() {
                                     return {
                                         label:item,
                                         value:num,
-                                        '__isNew__': true
+                                        '_isNew_': true
                                     }
                                 if(item.inputValue)
                                     return {

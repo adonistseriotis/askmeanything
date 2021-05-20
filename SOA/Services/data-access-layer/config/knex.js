@@ -1,4 +1,4 @@
-var dbConfig = require('./db');
-var knex = require('knex')(dbConfig);
+const dbConfig = require('./db');
 
-module.exports = knex;
+
+module.exports = require('knex')(dbConfig);

@@ -11,6 +11,8 @@ const logger = require('../services/logger');
 const indexRouter = require('../routes/indexRoute');
 const usersRouter = require('../routes/getUserRoute');
 const createUserRoute = require('../routes/createUserRoute');
+const createQuestionRoute = require('../routes/createQuestionRoute');
+const getQuestionRoute = require('../routes/getQuestionRoute');
 
 class ExpressLoader {
     constructor () {
@@ -32,6 +34,8 @@ class ExpressLoader {
         app.use('/', indexRouter);
         app.use('/getUser', usersRouter);
         app.use('/createUser', createUserRoute);
+        app.use('/createQuestion', createQuestionRoute);
+        app.use('/getQuestion', getQuestionRoute);
 
         /* Start listening */
 
