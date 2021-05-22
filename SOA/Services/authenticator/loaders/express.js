@@ -12,6 +12,7 @@ const indexRouter = require('../routes/index');
 const usersRouter = require('../routes/users');
 const signUpRouter = require('../routes/signup');
 const loginRouter = require('../routes/login');
+const authorizeRouter = require('../routes/authorize');
 
 class ExpressLoader {
     constructor () {
@@ -34,6 +35,8 @@ class ExpressLoader {
         app.use('/users', usersRouter);
         app.use('/signup', signUpRouter);
         app.use('/login', loginRouter);
+        app.use('/authorize', authorizeRouter);
+
 
         /* Start listening */
 
