@@ -1,10 +1,9 @@
 import { Typography,Container, TextField ,Button,makeStyles,Grid, Box } from "@material-ui/core";
-import {React, useState , Component } from "react";
+import {React, useState} from "react";
 import NavigationBar from '../NavigationBar/NavigationBar';
 import Autocomplete , {createFilterOptions} from '@material-ui/lab/Autocomplete';
-import { components } from 'react-select';
-import Chip from '@material-ui/core/Chip'
 import { createQuestion } from '../../Services/axiosConfig'
+
 
 
 const filter = createFilterOptions();

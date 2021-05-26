@@ -169,7 +169,7 @@ const SignUp = () =>{
 
                 <Grid container justify="flex-end">
                     <Grid item>
-                        <Link color='inherit' href="/login" variant="body2">
+                        <Link color='secondary' href="/login" variant="body2">
                         Already have an account? Sign in
                         </Link>
                     </Grid>

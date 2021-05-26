@@ -4,8 +4,10 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import {Redirect} from 'react-router-dom';
+import Link from '@material-ui/core/Link'
 
 import cardStyle from './LandingViewCardStyle';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(cardStyle);
 
@@ -29,6 +31,11 @@ const LandingViewCard = ({title, subtitle, link}) => {
               title={title}
               subheader={subtitle}
             />
+            <Link href= {link} >
+              <Typography align='right' color = 'secondary'>
+                Details
+              </Typography>
+            </Link>
         </Card>
     )
 }

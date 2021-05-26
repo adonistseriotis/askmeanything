@@ -142,14 +142,14 @@ export default function Login() {
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link color="inherit" href="#" variant="inherit">
+              <Link color="secondary" href="#" variant="inherit">
                 <Typography>
                   Forgot password?
                 </Typography>
               </Link>
             </Grid>
             <Grid item>
-              <Link color="inherit" href="/signup" variant="inherit">
+              <Link color="secondary" href="/signup" variant="inherit">
                 <Typography>
                   {"Don't have an account? Sign Up"}
                 </Typography>
