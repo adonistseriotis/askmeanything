@@ -1,12 +1,12 @@
 const axiosInstance = require("../../authenticator/config/axiosInstance");
 
 
-const getQuestion = (body) => {
-    return await axiosInstance.post('/getQuestion', {...body})
+const getQuestion = async (param) => {
+    return await axiosInstance.get('/getQuestion', {params: { questionID: param.questionID}})
     .then(res => {
         return {
             data: {
-                message: res.data.message
+                question: res.data.question
             },
             status: res.status
         }

@@ -1,9 +1,9 @@
 var express = require('express');
 const axiosInstance = require('../../authenticator/config/axiosInstance');
 var router = express.Router();
-const createQuestion = require('../services/createQuestionService');
+const answer = require('../services/answerService');
 
-/* POST new question */
+/* POST new answer */
 router.post('/', async (req, res, next) => {
     const body = req.body;
 
@@ -13,12 +13,10 @@ router.post('/', async (req, res, next) => {
 
         // Service bus request for authentication 
         
-        await createQuestion(body, req.headers.authorization)
+        await answer(body, req.headers.authorization)
         .then(result => res.status(result.status).send({...result.data}))
         .catch(error => res.status(error.status || 400).send({...error.data}))
     }
-
-    
 
   });
   

@@ -16,6 +16,7 @@ const updateQuestionRoute = require('../routes/updateQuestionRoute');
 const getQuestionRoute = require('../routes/getQuestionRoute');
 const questionFeedRoute = require('../routes/questionFeedRoute');
 const answerRoute = require('../routes/answerRoute');
+const healthcheck = require('../routes/healthcheck');
 
 class ExpressLoader {
     constructor () {
@@ -42,11 +43,13 @@ class ExpressLoader {
         app.use('/getQuestion', getQuestionRoute);
         app.use('/questionFeed', questionFeedRoute);
         app.use('/answer', answerRoute);
+        app.use('/healthcheck', healthcheck)
 
         /* Start listening */
 
         this.server = app.listen(process.env.PORT, () => {
             logger.info(`Express running, now listening on port ${process.env.PORT}`)
+            console.log(`Express running, now listening on port ${process.env.PORT}`)
         })
 
     }

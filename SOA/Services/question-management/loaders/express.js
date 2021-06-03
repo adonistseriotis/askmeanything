@@ -10,7 +10,8 @@ const logger = require('../services/logger');
 /* Include routes */
 const createQuestionRoute = require('../routes/createQuestion');
 const getQuestionRoute = require('../routes/getQuestion');
-const indexRoute = require('../routes/indexRoute');
+const questionFeedRoute = require('../routes/questionFeed');
+const answerRoute = require('../routes/answer');
 
 class ExpressLoader {
     constructor () {
@@ -29,14 +30,16 @@ class ExpressLoader {
         app.use(cookieParser());
 
         /* Routing */
-        app.use('/', indexRoute);
         app.use('/createQuestion', createQuestionRoute);
         app.use('/getQuestion', getQuestionRoute);
+        app.use('/questionFeed', questionFeedRoute);
+        app.use('/answer', answerRoute);
         
         /* Start listening */
 
         this.server = app.listen(process.env.PORT, () => {
-            logger.info(`Express running, now listening on port ${process.env.PORT}`)
+            logger.info(`Express running, now listening on port ${process.env.PORT}`);
+            console.log(`Express running, now listening on port ${process.env.PORT}`)
         })
 
     }

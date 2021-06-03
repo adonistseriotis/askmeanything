@@ -1,16 +1,13 @@
 const axiosInstance = require("../../authenticator/config/axiosInstance");
 
 
-const createQuestion = async (body, authHeader) => {
-    return await axiosInstance.post('/createQuestion', {...body}, {
-        headers: {
-            Authorization: authHeader
-        }
-    })
+const questionFeed = async (body) => {
+    return await axiosInstance.get('/questionFeed', {...body})
     .then(res => {
         return {
             data: {
-                questionID: res.data.message
+
+                questions: res.data.questions
             },
             status: res.status
         }
@@ -26,4 +23,4 @@ const createQuestion = async (body, authHeader) => {
     })
 }
 
-module.exports = createQuestion;
+module.exports = questionFeed;

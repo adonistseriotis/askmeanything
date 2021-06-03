@@ -1,20 +1,20 @@
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const logger = require('./services/logger');
+const axiosInstance = require('./config/axiosInstance');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+let appInstance;
 
-var app = express();
+axiosInstance.get('/healthcheck')
+.then(() => {
+    /* Call express loader */
+    logger.info("Database connection successful");
+    const ExpressLoader = require('./loaders/express');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+    appInstance = new ExpressLoader();
+    
+}).catch(err => {
+    /* Failed to connect to db */
+    console.log(err);
+    logger.error(err);
+})
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-
-module.exports = app;
+module.exports = appInstance;
