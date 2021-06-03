@@ -12,7 +12,10 @@ const indexRouter = require('../routes/indexRoute');
 const usersRouter = require('../routes/getUserRoute');
 const createUserRoute = require('../routes/createUserRoute');
 const createQuestionRoute = require('../routes/createQuestionRoute');
+const updateQuestionRoute = require('../routes/updateQuestionRoute');
 const getQuestionRoute = require('../routes/getQuestionRoute');
+const questionFeedRoute = require('../routes/questionFeedRoute');
+const answerRoute = require('../routes/answerRoute');
 
 class ExpressLoader {
     constructor () {
@@ -35,7 +38,10 @@ class ExpressLoader {
         app.use('/getUser', usersRouter);
         app.use('/createUser', createUserRoute);
         app.use('/createQuestion', createQuestionRoute);
+        app.use('/updateQuestion', updateQuestionRoute);
         app.use('/getQuestion', getQuestionRoute);
+        app.use('/questionFeed', questionFeedRoute);
+        app.use('/answer', answerRoute);
 
         /* Start listening */
 

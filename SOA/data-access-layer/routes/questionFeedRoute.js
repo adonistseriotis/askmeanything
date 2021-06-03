@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const getQuestion = require('../dal/getQuestion');
+const questionFeed = require('../dal/questionFeed');
 
 router.get('/', async (req, res) => {
-    await getQuestion(req.query)
-    .then(result => res.status(200).send({"question":result.rows}))
+
+    await questionFeed(req.body)
+    .then(result => res.status(200).send({"questions":result.rows}))
     .catch(error => res.status(400).send({"error":error.detail}))
 
 })
