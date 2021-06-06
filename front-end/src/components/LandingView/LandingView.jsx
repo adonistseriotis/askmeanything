@@ -1,10 +1,9 @@
 import React from 'react';
 import {makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import LandingViewCard from '../Recyclable/LandingViewCard/LandingViewCard';
 import NavigationBar from "../NavigationBar/NavigationBar";
-import homeStyle from './LandingViewStyle';
 import PieChart from '../Charts/PieChart'
+import {Typography} from '@material-ui/core'
 
   const opa = ["Jan","Feb","March","Lel"]
   const opadata = [1000,2000,3000,2200]
@@ -32,33 +31,36 @@ const testCards = [
     }
 ]
 
-const useStyles = makeStyles(homeStyle);
+const useStyles = makeStyles();
 
 const LandingView = () => {
 
-    const classes = useStyles();
+const classes = useStyles();
 
     return (
-        <React.Fragment>
-         <Grid container className={classes.grid}>
-            {testCards.map((row, count) => (
-                <Grid item key={'Grid' + count}>
-                    <Grid>
+        <div className={classes.root}>
+            <Grid container spacing = {3} md = {10}>
+                <Grid item sm = {4}>
+                    <Typography align = 'center'>
+                        Look what other users have 
+                        {'\n'} asked based on keywords!
+                    </Typography>
                     <PieChart 
                         labels = {opa}
                         label = "keyword"
                         data = {opadata}
-                        />
-                    <LandingViewCard 
-                        
-                        title={row.title}
-                        subtitle={row.subtitle}
-                        link={row.link}
                     />
-                    </Grid>
-                </Grid>))}
-        </Grid>
-        </React.Fragment>
+                </Grid>
+                <Grid item sm={5}>
+                    <Typography align = 'center'>
+                        Check some questions based on keywords.
+                        Enter keywords below!
+                    </Typography>
+                </Grid>
+                        
+            </Grid>
+        </div>
+
         
     )
 }

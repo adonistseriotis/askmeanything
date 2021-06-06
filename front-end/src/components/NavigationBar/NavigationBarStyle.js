@@ -1,17 +1,21 @@
 const navigationBarStyle = {
     root: {
         display: 'flex',
-        justify: 'center',
+        alignItems : 'center'
     },
 
     toolbar: {
-        alignItems: 'flex-start',
-        width:'80vw'
+        alignItems: 'center'
+
     },
 
     whitespace: {
         flexGrow: 1
     },
+    appbar: {
+        background: 'transparent',
+        boxShadow: 'none'
+    }
 }
 
 export default navigationBarStyle;
