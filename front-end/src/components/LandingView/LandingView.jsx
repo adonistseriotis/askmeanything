@@ -1,67 +1,63 @@
 import React from 'react';
 import {makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import NavigationBar from "../NavigationBar/NavigationBar";
-import PieChart from '../Charts/PieChart'
-import {Typography} from '@material-ui/core'
+import LandingViewCard from '../Recyclable/LandingViewCard/LandingViewCard';
+import homeStyle from './LandingViewStyle';
+import QuestionFeed from '../QuestionFeed/QuestionFeed';
 
-  const opa = ["Jan","Feb","March","Lel"]
-  const opadata = [1000,2000,3000,2200]
-
-const testCards = [
-    {
-        title:"Questions per Keyword",
-        subtitle:"Graph/Table",
-        link:"/login"
-    },
-    {
-        title:"Questions per day/period",
-        subtitle:"Graph/Table",
-        link:"/signup"
-    },
-    {
-        title:"Ask a new question",
-        subtitle: "",
-        link:"/"
-    },
-    {
-        title:"Answer a question",
-        subtitle:"",
-        link:""
-    }
-]
-
-const useStyles = makeStyles();
+const useStyles = makeStyles(homeStyle);
 
 const LandingView = () => {
+    const classes = useStyles();
 
-const classes = useStyles();
+    const testCards = [
+        {
+            title:"Questions per Keyword",
+            subtitle:"Graph/Table",
+            chartType:"PieChart",
+            chartTitle:"QuestionsPerKeyword",
+            isChart:true
+        },
+        // {
+        //     title:"Ask a new question",
+        //     subtitle: "Click here to ask a new question",
+        //     link:"/create-question"
+        // },
+        // {
+        //     title:"Answer a question",
+        //     subtitle:"",
+        //     link:""
+        // },
+        {
+            title:"Questions per Day",
+            subtitle:"Graph/Table",
+            chartType:"Calendar",
+            chartTitle:"QuestionsPerDay",
+            isChart:true
+        },
+    ]
+    
 
     return (
-        <div className={classes.root}>
-            <Grid container spacing = {3} md = {10}>
-                <Grid item sm = {4}>
-                    <Typography align = 'center'>
-                        Look what other users have 
-                        {'\n'} asked based on keywords!
-                    </Typography>
-                    <PieChart 
-                        labels = {opa}
-                        label = "keyword"
-                        data = {opadata}
-                    />
-                </Grid>
-                <Grid item sm={5}>
-                    <Typography align = 'center'>
-                        Check some questions based on keywords.
-                        Enter keywords below!
-                    </Typography>
-                </Grid>
-                        
+         <Grid container direction='column' justify="center" alignItems="center">
+            <Grid item container xs={12} direction='row' justify='center'>
+                {testCards.map((row, count) => (
+                    <Grid item key={'Grid' + count}>
+                        <Grid>
+                        <LandingViewCard 
+                            title={row.title}
+                            subtitle={row.subtitle}
+                            chartType={row.chartType}
+                            chartTitle={row.chartTitle}
+                            isChart={row.isChart}
+                        />
+                        </Grid>
+                    </Grid>))}
             </Grid>
-        </div>
-
-        
+            <Grid item container direction='row' xs={8}>
+                <QuestionFeed />
+            </Grid>
+        </Grid>
     )
 }
 

@@ -8,17 +8,8 @@ const cors = require('cors');
 const logger = require('../services/logger');
 
 /* Include routes */
-const indexRouter = require('../routes/indexRoute');
-const usersRouter = require('../routes/getUserRoute');
-const createUserRoute = require('../routes/createUserRoute');
-const createQuestionRoute = require('../routes/createQuestionRoute');
-const updateQuestionRoute = require('../routes/updateQuestionRoute');
-const getQuestionRoute = require('../routes/getQuestionRoute');
-const questionFeedRoute = require('../routes/questionFeedRoute');
-const answerRoute = require('../routes/answerRoute');
-const healthcheck = require('../routes/healthcheck');
-const questionsPerKeyword = require('../routes/questionsPerKeywordRoute');
-const questionsPerDay = require('../routes/questionsPerDayRoute')
+const questionsPerKeyword = require('../routes/questionsPerKeyword')
+const questionsPerDay = require('../routes/questionsPerDay')
 
 class ExpressLoader {
     constructor () {
@@ -37,22 +28,13 @@ class ExpressLoader {
         app.use(cookieParser());
 
         /* Routing */
-        app.use('/', indexRouter);
-        app.use('/getUser', usersRouter);
-        app.use('/createUser', createUserRoute);
-        app.use('/createQuestion', createQuestionRoute);
-        app.use('/updateQuestion', updateQuestionRoute);
-        app.use('/getQuestion', getQuestionRoute);
-        app.use('/questionFeed', questionFeedRoute);
-        app.use('/answer', answerRoute);
-        app.use('/healthcheck', healthcheck);
         app.use('/questionsperkeyword', questionsPerKeyword);
         app.use('/questionsperday', questionsPerDay);
-
+        
         /* Start listening */
 
         this.server = app.listen(process.env.PORT, () => {
-            logger.info(`Express running, now listening on port ${process.env.PORT}`)
+            logger.info(`Express running, now listening on port ${process.env.PORT}`);
             console.log(`Express running, now listening on port ${process.env.PORT}`)
         })
 

@@ -1,6 +1,6 @@
-import { Typography,Container, TextField ,Button,makeStyles,Grid, Box, Divider } from "@material-ui/core";
+import { Typography,Chip, TextField ,Button,makeStyles,Grid, Box, Divider } from "@material-ui/core";
 import {React, useState, useEffect} from "react";
-import { getQuestion } from '../../Services/axiosConfig'
+import { getQuestion, answer } from '../../Services/axiosConfig'
 import { useHistory } from 'react-router-dom';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';
 import ErrorPage from '../ErrorPage/ErrorPage';
@@ -11,8 +11,7 @@ import TimelineConnector from '@material-ui/lab/TimelineConnector';
 import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
-import FastfoodIcon from '@material-ui/icons/Fastfood';
-import LaptopMacIcon from '@material-ui/icons/LaptopMac';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import Paper from '@material-ui/core/Paper';
 
 
@@ -43,13 +42,36 @@ const useStyles = makeStyles((theme) => ({
   secondaryTail: {
     backgroundColor: theme.palette.secondary.main,
   },
-
+  field: {
+    marginTop: 20,
+    marginBottom: 20,
+    display: 'block'
+    } ,
+  submit:  {
+    margin: theme.spacing(2, 5, 0),
+  },
 }));
 
 export default function GetQuestion() {
     const [question, setQuestion] = useState(null);
     const history = useHistory();
-    
+    const [newAnswer, setNewAnswer] = useState('');
+    const [refresh, setRefresh] = useState(false);
+
+    const onNewAnswerChange = (e) => {
+        setNewAnswer(e.target.value)
+    }
+
+    const handleSubmit = () => {
+        answer(question.questionid, newAnswer)
+        .then(res => {
+            console.log(res);
+            setRefresh(prev => !prev)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
     
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -67,77 +89,123 @@ export default function GetQuestion() {
         .catch(err => {
             console.log(err)
         })
-    }, [])
+    }, [refresh])
 
     const classes = useStyles();
 
     return (
         question ?
         (question.questionid ?
-        <Grid container alignContent={'center'} justify={'center'} /* style={{backgroundColor:'blue'}} */>
-            <Grid item container xs={10} /* style={{backgroundColor:'red'}} */>
-                <Grid item container>
-                    <Typography variant='h4' color='textPrimary'>{question.questiontitle}</Typography>
-                </Grid>
-
-                <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'green'}} */>
-                    <Grid container item xs={3} direction={'row'} alignItems={'baseline'} className={classes.initText} /* style={{backgroundColor: 'red'}} */>
-                        <Typography variant='subtitle1' color='textSecondary' >
-                            Created At: 
-                        </Typography>
-                        <Typography variant='body2' style={{marginLeft: 5}}>
-                            {question.questiondatecreated}
-                        </Typography>
+            <Grid container alignContent={'center'} justify={'center'} /* style={{backgroundColor:'blue'}} */>
+                <Grid item container xs={10} /* style={{backgroundColor:'red'}} */>
+                    <Grid item container>
+                        <Typography variant='h4' color='textPrimary'>{question.questiontitle}</Typography>
                     </Grid>
-                    {question.questionisedited ?
-                        <Grid item container xs={3} direction={'row'} alignItems={'baseline'} className={classes.initText}>
+
+                    <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'red'}} */>
+                        {question.keywords.map(keyword => (
+                            <Chip style={{margin:5}} label={keyword.label} key={keyword.value} />
+                        ))}
+                    </Grid>
+
+                    <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'green'}} */>
+                        <Grid container item xs={3} direction={'row'} alignItems={'baseline'} className={classes.initText} /* style={{backgroundColor: 'red'}} */>
                             <Typography variant='subtitle1' color='textSecondary' >
-                                Updated At: 
+                                Created At: 
                             </Typography>
                             <Typography variant='body2' style={{marginLeft: 5}}>
-                                {question.questiondateupdated}
+                                {question.questiondatecreated}
                             </Typography>
                         </Grid>
-                    : null}
-                </Grid>
+                        {question.questionisedited ?
+                            <Grid item container xs={3} direction={'row'} alignItems={'baseline'} className={classes.initText}>
+                                <Typography variant='subtitle1' color='textSecondary' >
+                                    Updated At: 
+                                </Typography>
+                                <Typography variant='body2' style={{marginLeft: 5}}>
+                                    {question.questiondateupdated}
+                                </Typography>
+                            </Grid>
+                        : null}
+                    </Grid>
 
-                <Grid item container xs={12} style={{backgroundColor:'black'}}>
-                    <Divider variant="middle"/>
-                </Grid>
+                    <Grid item container xs={12} style={{backgroundColor:'black'}}>
+                        <Divider variant="middle"/>
+                    </Grid>
                 <Grid item container className={classes.questionBody}>
-                    <Typography variant='body2' color='primary'>{question.questionbody}</Typography>
+                    <Typography variant='body2' color='primary' style={{fontSize: '1.5rem'}}>{question.questionbody}</Typography>
                 </Grid>
             </Grid>
-            <Grid item container xs={10} /* style={{backgroundColor:'red'}} */>
-            <Timeline align="alternate">
-                {question.answers.map(answer => {
-                return (
-                    <TimelineItem key={answer.answerID}>
-                    <TimelineOppositeContent>
-                    <Typography variant="body2" color="textSecondary">
-                        {answer.datetime}
-                    </Typography>
-                    </TimelineOppositeContent>
-                    <TimelineSeparator>
-                    <TimelineDot>
-                        {/* <FastfoodIcon/> */}
-                    </TimelineDot>
-                    <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant="h6" component="h1">
-                        {answer.username}
-                        </Typography>
-                        <Typography>{answer.body}</Typography>
-                    </Paper>
-                    </TimelineContent>
-                </TimelineItem>)
-                })}
-            </Timeline> 
+                <Grid item container xs={10} /* style={{backgroundColor:'red'}} */>
+                <Timeline align="alternate">
+                    {question.answers[0].answerID ? question.answers.map((answer, row) => {
+                        const isOdd = row % 2 === 0 ? false : true;
+                        const isLast = (row === question.answers.length-1);
+                        return (
+                            <TimelineItem key={answer.answerID}>
+                            <TimelineOppositeContent>
+                            <Typography variant="body2" color="textSecondary">
+                                {answer.datetime}
+                            </Typography>
+                            </TimelineOppositeContent>
+                            <TimelineSeparator>
+                            <TimelineDot color={isOdd ? "secondary" : "primary"}>
+                                <QuestionAnswerIcon/>
+                            </TimelineDot>
+                            {isLast ? null : <TimelineConnector />}
+                            </TimelineSeparator>
+                            <TimelineContent>
+                            <Paper elevation={3} className={classes.paper}>
+                                <Typography variant="h6" component="h1">
+                                {answer.username}
+                                </Typography>
+                                <Typography>{answer.body}</Typography>
+                            </Paper>
+                            </TimelineContent>
+                        </TimelineItem>) 
+                        }): null}
+                </Timeline> 
+                
             </Grid>
-        </Grid> 
-            : <ErrorPage/>)
-            : <LoadingScreen/> 
+                <Grid item container xs={10} /* style={{backgroundColor:'red'}} */>
+                    <form noValidate style={{width:'100%'}}>
+                        <TextField
+                            className = {classes.field}
+                            id = "answer"
+                            label = "Answer"
+                            name="answer"
+                            value= {newAnswer}
+                            variant="outlined"
+                            color = "primary"
+                            multiline
+                            rows = {3}
+                            fullWidth
+                            required
+                            onChange={onNewAnswerChange}
+                        />
+                        <Box 
+                            className={classes.centerBox}
+                            component="span" 
+                            m={1}
+                            >
+                            <Button
+                                variant="outlined"
+                                onClick={()=> setNewAnswer('')}
+                                style={{marginRight:5}}
+                            >
+                                Never Mind
+                            </Button>
+                            <Button 
+                                variant ="outlined"
+                                onClick={handleSubmit}
+                            >
+                                Submit
+                            </Button>
+                        </Box>
+                    </form>
+                </Grid>
+            </Grid> 
+                : <ErrorPage/>)
+                : <LoadingScreen/> 
     )
   }

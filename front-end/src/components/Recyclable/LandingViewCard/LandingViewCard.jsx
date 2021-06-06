@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,34 +8,65 @@ import Link from '@material-ui/core/Link'
 
 import cardStyle from './LandingViewCardStyle';
 import { Typography } from '@material-ui/core';
+import PieChart from '../../Charts/PieChart';
+import { getQuestionsPerKeyword, getQuestionsPerDay } from '../../../Services/axiosConfig';
 
 const useStyles = makeStyles(cardStyle);
 
-const LandingViewCard = ({title, subtitle, link}) => {
-    const [raised, setRaised] = useState(false);
-
+const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart}) => {
     const classes = useStyles();
+    const [chartData, setChartData] = useState(null)
 
-    const toggleRaised = () => {
-        setRaised(prev => !prev)
+    const getChartData = () => {
+      switch(chartTitle){
+        case "QuestionsPerKeyword":
+          getQuestionsPerKeyword()
+          .then(data => {
+            console.log(data)
+            const format = data.data.map(row => ([row.name, parseInt(row.count)]))
+            format.unshift(['Keywords','Questions Per Keyword'])
+            console.log("data to be inserted",format)
+            setChartData(format)
+          })
+          .catch(err => console.log(err))
+          break;
+        
+        case "QuestionsPerDay":
+          getQuestionsPerDay()
+          .then(data => {
+            console.log(data)
+            const format = data.data.map(row => ([new Date(row.day), parseInt(row.count)]))
+            format.unshift([{ type: 'date', id: 'Date' }, { type: 'number', id: 'Questions/Day' }] )
+            console.log("data to be inserted",format)
+            setChartData(format)
+          })
+          .catch(err => console.log(err))
+
+        default:
+          break;
+      }
     }
+
+    useEffect(() => {
+      getChartData();
+    }, [])
 
     return (
         <Card 
-          raised={raised} 
-          onMouseOver={toggleRaised}
-          onMouseOut={toggleRaised}
-          className={classes.root}
+          className={isChart ? ( chartType==="Calendar" ? classes.calendar : classes.rootChart) :classes.root}
           >
             <CardHeader
               title={title}
               subheader={subtitle}
-            />
-            <Link href= {link} >
-              <Typography align='right' color = 'secondary'>
-                Details
-              </Typography>
-            </Link>
+            /> 
+            {isChart ?
+            <PieChart 
+                chartType={chartType}
+                title={chartTitle}
+                data={chartData}
+                label='Keywords'
+                header='Questions Per Keyword'
+              /> : null}
         </Card>
     )
 }

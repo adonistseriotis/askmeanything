@@ -31,6 +31,15 @@ const axiosInstanceQuestionAnswerService = Axios.create({
     }
 });
 
+const axiosInstanceAnalyticsService = Axios.create({
+    baseURL: 'http://127.0.0.1:3003',
+    timeout: 5000,
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    }
+});
+
 export async function login(username, password) {
     return await axiosInstanceAuthService
         .post('/login', {'username': username, 'password': password})
@@ -84,6 +93,45 @@ export async function getQuestion(questionID) {
             return response.data
         })
         .catch(error => {throw error});
+}
+
+export async function answer(questionID,body) {
+
+    const username = getUsername();
+    
+    return await axiosInstanceQuestionAnswerService
+        .post('/answer', {questionID: questionID, 'body': body, 'username': username})
+        .then((response) => {
+            return response.data
+        })
+        .catch(error => {throw error});
+}
+
+export async function getFeed() {
+    return await axiosInstanceQuestionAnswerService
+    .get('/questionFeed')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
+}
+
+export async function getQuestionsPerKeyword() {
+    return await axiosInstanceAnalyticsService
+    .get('/questionsperkeyword')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
+}
+
+export async function getQuestionsPerDay() {
+    return await axiosInstanceAnalyticsService
+    .get('/questionsperday')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
 }
 
 export default axiosInstanceAuthService;

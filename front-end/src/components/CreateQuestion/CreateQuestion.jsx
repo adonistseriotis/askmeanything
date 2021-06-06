@@ -1,6 +1,5 @@
 import { Typography,Container, TextField ,Button,makeStyles,Grid, Box } from "@material-ui/core";
 import {React, useState} from "react";
-import NavigationBar from '../NavigationBar/NavigationBar';
 import Autocomplete , {createFilterOptions} from '@material-ui/lab/Autocomplete';
 import { createQuestion } from '../../Services/axiosConfig'
 
@@ -85,17 +84,17 @@ export default function CreateQuestion() {
                 </Typography>
                 <form noValidate>
                     <TextField
-                    className= {classes.field}
-                    id = "title"
-                    label="Title"
-                    name="title"
-                    autoFocus
-                    value = {title}
-                    variant= "outlined"
-                    color = "primary"
-                    fullWidth
-                    required
-                    onChange={onTitleChange}
+                        className= {classes.field}
+                        id = "title"
+                        label="Title"
+                        name="title"
+                        autoFocus
+                        value = {title}
+                        variant= "outlined"
+                        color = "primary"
+                        fullWidth
+                        required
+                        onChange={onTitleChange}
                     />
                     <Autocomplete
                         multiple
