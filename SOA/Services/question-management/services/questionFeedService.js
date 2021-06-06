@@ -1,5 +1,4 @@
-const axiosInstance = require("../../authenticator/config/axiosInstance");
-
+const axiosInstance = require("../config/axiosInstance");
 
 const questionFeed = async (body) => {
     return await axiosInstance.get('/questionFeed', {...body})

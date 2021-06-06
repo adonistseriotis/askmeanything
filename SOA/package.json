@@ -1,0 +1,12 @@
+{
+  "name": "soa",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dal": "cd data-access-layer && yarn start",
+    "services": "concurrently \"cd Services/authenticator && yarn start\" \"cd Services/question-management && yarn start\""
+  },
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
+}

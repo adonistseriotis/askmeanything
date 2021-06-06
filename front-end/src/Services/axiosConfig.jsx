@@ -19,7 +19,17 @@ const axiosInstanceDataAccessLayer = Axios.create({
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     }
-})
+});
+
+const axiosInstanceQuestionAnswerService = Axios.create({
+    baseURL: 'http://127.0.0.1:3002',
+    timeout: 5000,
+    headers: {
+        'Authorization': 'JWT ' + localStorage.getItem('token'),
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+    }
+});
 
 export async function login(username, password) {
     return await axiosInstanceAuthService
@@ -56,10 +66,22 @@ export async function createQuestion(title, body, keywords) {
 
     const username = getUsername();
     
-    return await axiosInstanceDataAccessLayer
-        .post('/createquestion', {'title':title, 'body': body, 'username': username, 'keywords':keywords})
+    return await axiosInstanceQuestionAnswerService
+        .post('/createQuestion', {'title':title, 'body': body, 'username': username, 'keywords':keywords})
         .then((response) => {
-            console.log(response)
+            return response.data
+        })
+        .catch(error => {throw error});
+}
+
+export async function getQuestion(questionID) {
+
+    const username = getUsername();
+    
+    return await axiosInstanceQuestionAnswerService
+        .get('/getQuestion', { params : { questionID: questionID }})
+        .then((response) => {
+            return response.data
         })
         .catch(error => {throw error});
 }

@@ -88,7 +88,6 @@ export default function Login() {
 
   return (
     <Grid>
-    <NavigationBar/>
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>

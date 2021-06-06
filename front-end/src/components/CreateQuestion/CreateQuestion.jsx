@@ -72,13 +72,9 @@ export default function CreateQuestion() {
         if(e.code === "Enter")
             handleSubmit()
     }
-
-  
-  
   
     return (
         <Grid>
-            <NavigationBar/>
             <Container>
                 <Typography
                     variant = "h6"

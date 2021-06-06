@@ -1,5 +1,4 @@
-const axiosInstance = require("../../authenticator/config/axiosInstance");
-
+const axiosInstance = require("../config/axiosInstance");
 
 const createQuestion = async (body, authHeader) => {
     return await axiosInstance.post('/createQuestion', {...body}, {
