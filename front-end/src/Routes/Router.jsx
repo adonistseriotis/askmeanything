@@ -6,7 +6,7 @@ import CreateQuestion from '../components/CreateQuestion/CreateQuestion'
 import ProtectedRoute from './ProtectedRoute';
 import LandingView from '../components/LandingView/LandingView';
 import GetQuestion from '../components/Question/QuestionView';
-
+import UpdateQuestion from '../components/UpdateQuestion/UpdateQuestion';
 const Router = () => {
     return (
         <BrowserRouter>
@@ -16,6 +16,7 @@ const Router = () => {
             <Route path="/signup" component={SignUp} />
             <Route path="/create-question" component ={CreateQuestion}/>  
             <Route path="/question" component={GetQuestion} />
+            <Route path="/update-question" component= {UpdateQuestion} />
             <Redirect to="/home"/>
           </Switch>
         </BrowserRouter>
