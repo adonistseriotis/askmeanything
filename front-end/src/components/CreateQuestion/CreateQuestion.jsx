@@ -126,7 +126,7 @@ export default function CreateQuestion() {
                             }
                   
                             return filtered;
-                          }}
+                        }}
                         onChange={(event, newValue) => {
                             setKeywords(newValue.map((item, num) => {
                                 if(typeof item === 'string')

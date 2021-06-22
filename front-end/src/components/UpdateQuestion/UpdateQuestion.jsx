@@ -25,40 +25,29 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const data = [
-    {label: "sports", value: 1},
-    {label: "music", value: 2},
-    {label: "Tech", value: 3},
-    {label: "Sex", value: 4}
+const options = [
+    {name: "sports", ID: 1},
+    {name: "music", ID: 2},
+    {name: "Tech", ID: 3},
+    {name: "Sex", ID: 4}
 ]
 
-
-
-
-
-
-export default function UpdateQuestion({oldtitle,oldcontent,oldkeywords}) {
+export default function UpdateQuestion({oldtitle, oldcontent, oldkeywords}) {
   
  
     oldtitle = 'adsfdsd'
     oldcontent = 'asdfasdf'
     oldkeywords = [
-        {label: "music", value: 2},
-        {label: "Tech", value: 3},
-        {label: "Sex", value: 4}
+        {name: "music", ID: 2},
+        {name: "Tech", ID: 3},
+        {name: "Sex", ID: 4}
     ]
     
-    
-
-
     const classes = useStyles();
 
     const [title, setTitle] = useState(oldtitle);
     const [content, setContent] = useState(oldcontent);
     const [keywords, setKeywords] = useState(oldkeywords);
-
-
-
     const [errorMessage, setErrorMessage] = useState('');
     const [error, setError] = useState(false);
 
@@ -86,10 +75,14 @@ export default function UpdateQuestion({oldtitle,oldcontent,oldkeywords}) {
             handleSubmit()
     }
 
-    
-    
-    
-  
+    const getMax = () => {
+        return options.length + 1
+    }
+
+    useEffect(() => {
+        console.log(keywords)
+    },[keywords])
+
     return (
         <Grid>
             <Container>
@@ -120,66 +113,42 @@ export default function UpdateQuestion({oldtitle,oldcontent,oldkeywords}) {
                         label="Keywords"
                         name = "keywords"
                         value = {keywords}
-                        options={data}
-                        getOptionLabel={(option) => {
+                        options={options}
+                        getOptionLabel={(selected) => {
                             // e.g value selected with enter, right from the input
-                            if (typeof option === 'string') {
-                              return option;
-                            }
-                            if (option){
-                            if (option.inputValue === null) {
-                                return option;
-                            }
-                            if(option.inputValue & option){
-                                return option.inputValue;
-                            }
-                            if (option.label) {
-                              return option.label;
-                            }
-                            return option.label;
-                        }
-                            
-                          }}
-                        renderOption={(option)=> option.label}
+                            return selected.name
+                        }}
+                        // renderOption={(option)=> option.label}
                         freeSolo
                         filterOptions={(options, params) => {
-                            const filtered = filter(options, params);
-                            if (params.inputValue !== '') {
-                              filtered.push({
-                                inputValue: params.inputValue,
-                                label: `Add "${params.inputValue}"`,
-                                
-                              });
+                            const re = new RegExp(`.*${params.inputValue}.*`)
+                            const filtered = options.filter(option => re.test(option.name))
+                            
+                            if(filtered.length === 0){
+                                filtered.push({
+                                    name: `Add keyword "${params.inputValue}"`,
+                                    ID: getMax()
+                                })
                             }
-                  
-                            return filtered;
-                          }}
-                        onChange={(event, newValue) => {
-                            setKeywords(newValue.map((item, num) => {
-                                if(typeof item === 'string')
+                            
+                            return filtered
+                        }}
+                        onChange={(event, keywords) => {
+                            const newKeywords = keywords.map(keyword => {
+                                if(typeof keyword === 'string'){
+                                    //means it's new
                                     return {
-                                        label:item,
-                                        value:num,
-                                        '_isNew_': true
+                                        name: keyword,
+                                        ID: getMax()
                                     }
-                                if(item.inputValue)
-                                    return {
-                                        label:item.inputValue,
-                                        value:num ,
-                                        "__isNew__": true
-                                    }
-                                if(item.value)
-                                    return {
-                                        label:item.label,
-                                        value:num
-                                    }   
-                            }
-                            ))
-                            console.log(keywords)
-                          }}
-                        renderInput={(params) => (
-                        <TextField {...params} variant="outlined" label="Keywords" className = {classes.field}/>
-                        )}
+                                }
+                            })
+                            
+                            setKeywords(newKeywords)
+                        }}
+                        renderInput={(params) => {
+                            return <TextField {...params} variant="outlined" label="Keywords" className = {classes.field}/>
+                        }}
                     />
                     <TextField
                         className = {classes.field}
