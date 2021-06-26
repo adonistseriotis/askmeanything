@@ -12,7 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { login } from '../../Services/axiosConfig';
-import NavigationBar from '../NavigationBar/NavigationBar'
+import { Redirect, useHistory } from 'react-router-dom';
+import { isAuthenticated } from '../../Services/auth';
 
 function Copyright() {
   return (
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
+  const history = useHistory();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -71,6 +73,7 @@ export default function Login() {
     await login(username,password)
     .then(response => {
       if(response.statusText === 'OK'){
+        history.push("/login");
         setError(false);
         setErrorMessage("");
       }
@@ -86,7 +89,8 @@ export default function Login() {
         handleSubmit()
   }
 
-  return (
+  return isAuthenticated() ? (
+      <Redirect to="/home" /> ): (
     <Grid>
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -161,6 +165,5 @@ export default function Login() {
         <Copyright />
       </Box>
     </Container>
-    </Grid>
-  );
+    </Grid>);
 }

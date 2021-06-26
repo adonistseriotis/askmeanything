@@ -14,6 +14,9 @@ export const isAuthenticated = () => {
     }
 
 }
+export const logout = () => {
+  localStorage.removeItem('token');
+}
 
 export const getUsername = () => {
   const token = localStorage.getItem('token');

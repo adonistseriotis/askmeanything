@@ -15,5 +15,69 @@ services:
             - $HOME/Documents/SaaS/SOA/docker-volume
             - pg_data:/var/lib/postgresql/data/
             - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+        healthcheck:
+            test: ["CMD", "curl", "-fk", "https://localhost:54320"]
+            interval: 300s
+            timeout: 400s
+            retries: 10
+    
+    dal:
+        container_name: data_access_layer
+        build: ./data-access-layer
+        volumes:
+            - .:/usr/app/
+            - /usr/app/node_modules
+        network_mode: "host"
+        depends_on: 
+            - "db"
+        command: ["./wait-for-it.sh", "localhost:54320", "--", "node", "index.js"]
+
+    service_bus:
+        container_name: service_bus
+        build: ./service-bus
+        volumes:
+            - .:/usr/app/
+            - /usr/app/node_modules
+        network_mode: "host"
+        depends_on: 
+            - "dal"
+        command: ["./wait-for-it.sh", "localhost:3001", "--", "node", "index.js"]
+
+    authenticator:
+        container_name: authenticator
+        build: ./services/authenticator
+        volumes:
+            - .:/usr/app/
+            - /usr/app/node_modules
+        network_mode: "host"
+        depends_on: 
+            - "service_bus"
+        command: ["./wait-for-it.sh", "localhost:4000", "--", "node", "index.js"]
+
+
+    question_management:
+        container_name: question_management
+        build: ./services/question-management
+        volumes:
+            - .:/usr/app/
+            - /usr/app/node_modules
+        network_mode: "host"
+        restart: on-failure
+        depends_on: 
+            - "service_bus"
+        command: ["./wait-for-it.sh", "localhost:4000", "--", "node", "index.js"]
+
+    analytics:
+        container_name: analytics
+        build: ./services/analytics
+        volumes:
+            - .:/usr/app/
+            - /usr/app/node_modules
+        network_mode: "host"
+        restart: on-failure
+        depends_on: 
+            - "service_bus"
+        command: ["./wait-for-it.sh", "localhost:4000", "--", "node", "index.js"]
+
 volumes:
   pg_data:

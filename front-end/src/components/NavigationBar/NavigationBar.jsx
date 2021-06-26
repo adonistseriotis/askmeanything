@@ -8,12 +8,14 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {getUsername,isAuthenticated} from '../../Services/auth'
 import styles from './NavigationBarStyle.js';
+import {logout} from '../../Services/auth'
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(styles);
 
 const NavigationBar = props => {
+    const history = useHistory();
     const classes = useStyles();
-    const mel = getUsername();
 
     const [open, setOpen] = useState(false);
     const anchorRef = React.useRef(null);
@@ -30,6 +32,11 @@ const NavigationBar = props => {
     setOpen(false);
     };
 
+    const handleLogout = () => {
+        logout();
+        history.push("/login");
+    }
+
     function handleListKeyDown(event) {
         if (event.key === 'Tab') {
             event.preventDefault();
@@ -39,15 +46,15 @@ const NavigationBar = props => {
 
   // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
-    React.useEffect(() => {
+    React.useLayoutEffect(() => {
         if (prevOpen.current === true && open === false) {
             anchorRef.current.focus();
         }
-
+        isAuthenticated();
         prevOpen.current = open;
         }, [open]);
 
-    if (props.isAuthenticated == 0) return (
+    if (isAuthenticated() === false) return (
         <div className = {classes.root}>
             <AppBar position="static" className={classes.appbar}>
             <Toolbar className={classes.toolbar} >
@@ -98,7 +105,7 @@ const NavigationBar = props => {
                                     aria-haspopup="true"
                                     onClick={handleToggle}
                                     >
-                                        Kalasnikov
+                                        {getUsername()}
                                         <ExpandMoreIcon/>
                                 </Button>
                                 <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
@@ -112,7 +119,7 @@ const NavigationBar = props => {
                                                     <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                                                         <MenuItem onClick={handleClose}>Profile</MenuItem>
                                                         <MenuItem onClick={handleClose}>My account</MenuItem>
-                                                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                                     </MenuList>
                                                 </ClickAwayListener>
                                             </Paper>
