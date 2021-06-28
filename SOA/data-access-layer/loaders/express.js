@@ -18,7 +18,11 @@ const questionFeedRoute = require('../routes/questionFeedRoute');
 const answerRoute = require('../routes/answerRoute');
 const healthcheck = require('../routes/healthcheck');
 const questionsPerKeyword = require('../routes/questionsPerKeywordRoute');
-const questionsPerDay = require('../routes/questionsPerDayRoute')
+const questionsPerDay = require('../routes/questionsPerDayRoute');
+const searchRouter = require('../routes/searchRoute');
+const myquestionsRouter = require('../routes/myquestionsRoute');
+const myanswersRouter = require('../routes/myanswersRoute')
+const myquestionsPerDayRouter = require('../routes/myquestionsPerDayRoute');
 
 class ExpressLoader {
     constructor () {
@@ -48,6 +52,10 @@ class ExpressLoader {
         app.use('/healthcheck', healthcheck);
         app.use('/questionsperkeyword', questionsPerKeyword);
         app.use('/questionsperday', questionsPerDay);
+        app.use('/search', searchRouter);
+        app.use('/myquestions', myquestionsRouter);
+        app.use('/myanswers', myanswersRouter);
+        app.use('/myquestionsperday', myquestionsPerDayRouter);
 
         /* Start listening */
 

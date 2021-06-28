@@ -9,7 +9,8 @@ const logger = require('../services/logger');
 
 /* Include routes */
 const questionsPerKeyword = require('../routes/questionsPerKeyword')
-const questionsPerDay = require('../routes/questionsPerDay')
+const questionsPerDay = require('../routes/questionsPerDay');
+const myquestionsPerDay = require('../routes/myquestionsPerDay');
 
 class ExpressLoader {
     constructor () {
@@ -30,6 +31,7 @@ class ExpressLoader {
         /* Routing */
         app.use('/questionsperkeyword', questionsPerKeyword);
         app.use('/questionsperday', questionsPerDay);
+        app.use('/myquestionsperday', myquestionsPerDay)
         
         /* Start listening */
 
