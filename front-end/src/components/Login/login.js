@@ -13,7 +13,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { login } from '../../Services/axiosConfig';
 import { Redirect, useHistory } from 'react-router-dom';
-import { isAuthenticated } from '../../Services/auth';
+import { getUsername, isAuthenticated } from '../../Services/auth';
+import { isAuthorized } from '../../Services/axiosConfig'
 
 function Copyright() {
   return (
@@ -54,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Login() {
   const classes = useStyles();
   const history = useHistory();
+  const [isAuth, setIsAuth] = useState(false)
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -73,7 +75,7 @@ export default function Login() {
     await login(username,password)
     .then(response => {
       if(response.statusText === 'OK'){
-        history.push("/login");
+        setIsAuth(true)
         setError(false);
         setErrorMessage("");
       }
@@ -89,8 +91,9 @@ export default function Login() {
         handleSubmit()
   }
 
-  return isAuthenticated() ? (
+  return getUsername() ? (
       <Redirect to="/home" /> ): (
+
     <Grid>
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>

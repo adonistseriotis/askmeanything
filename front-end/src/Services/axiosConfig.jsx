@@ -5,7 +5,7 @@ const axiosInstanceAuthService = Axios.create({
     baseURL: 'http://127.0.0.1:3000',
     timeout: 5000,
     headers: {
-        'Authorization': 'JWT ' + localStorage.getItem('token'),
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     }
@@ -15,7 +15,7 @@ const axiosInstanceDataAccessLayer = Axios.create({
     baseURL: 'http://127.0.0.1:3001',
     timeout: 5000,
     headers: {
-        'Authorization': 'JWT ' + localStorage.getItem('token'),
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     }
@@ -25,7 +25,7 @@ const axiosInstanceQuestionAnswerService = Axios.create({
     baseURL: 'http://127.0.0.1:3002',
     timeout: 5000,
     headers: {
-        'Authorization': 'JWT ' + localStorage.getItem('token'),
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     }
@@ -35,6 +35,7 @@ const axiosInstanceAnalyticsService = Axios.create({
     baseURL: 'http://127.0.0.1:3003',
     timeout: 5000,
     headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token'),
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     }
@@ -45,7 +46,7 @@ export async function login(username, password) {
         .post('/login', {'username': username, 'password': password})
         .then((response) => {
             localStorage.setItem('token', response.data.token);
-            axiosInstanceAuthService.defaults.headers['Authorization'] = 'JWT ' + response.data.token;
+            axiosInstanceAuthService.defaults.headers['Authorization'] = 'Bearer ' + response.data.token;
             console.log("Successful login!", response)
             return response
         })
@@ -60,6 +61,14 @@ export async function login(username, password) {
             }
             throw error
         });
+}
+
+export function AxiosLogout() {
+    delete axiosInstanceAnalyticsService.defaults.headers.common["Authorization"];
+    delete axiosInstanceAuthService.defaults.headers.common["Authorization"];
+    delete axiosInstanceDataAccessLayer.defaults.headers.common["Authorization"];
+    delete axiosInstanceQuestionAnswerService.defaults.headers.common["Authorization"];                                                           
+
 }
 
 export async function signUp(username, password, email) {
@@ -107,6 +116,7 @@ export async function answer(questionID,body) {
         .catch(error => {throw error});
 }
 
+
 export async function getFeed() {
     return await axiosInstanceQuestionAnswerService
     .get('/questionFeed')
@@ -128,6 +138,61 @@ export async function getQuestionsPerKeyword() {
 export async function getQuestionsPerDay() {
     return await axiosInstanceAnalyticsService
     .get('/questionsperday')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
+}
+
+export async function isAuthorized() {
+    return await axiosInstanceAuthService
+    .post('/authorize')
+    .then(res => {
+        console.log(res.data)
+        if(res.status === 204)
+            throw {
+                response: {
+                    data: "No content"
+                }
+            }
+        return true
+    })
+    .catch(err => {
+        console.error(err.response.data)
+        return false
+    })
+}
+
+export async function myQuestions() {
+    return await axiosInstanceQuestionAnswerService
+    .get('/myquestions')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
+}
+
+export async function myAnswers() {
+    return await axiosInstanceQuestionAnswerService
+    .get('/myanswers')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
+}
+
+export async function myQuestionsPerDay() {
+    return await axiosInstanceAnalyticsService
+    .get('/myquestionsperday')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
+}
+
+export async function search(filter) {
+    return await axiosInstanceQuestionAnswerService
+    .post('/search', {filter: filter})
     .then(response => {
         return response.data
     })

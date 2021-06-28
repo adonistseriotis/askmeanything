@@ -116,7 +116,10 @@ export default function UpdateQuestion({oldtitle, oldcontent, oldkeywords}) {
                         options={options}
                         getOptionLabel={(selected) => {
                             // e.g value selected with enter, right from the input
-                            return selected.name
+                            if(selected)
+                                return selected.name
+                            else
+                                return 'WTF'
                         }}
                         // renderOption={(option)=> option.label}
                         freeSolo

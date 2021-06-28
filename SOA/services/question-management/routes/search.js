@@ -4,7 +4,7 @@ const search = require('../services/searchService');
 const auth = require('../middleware/authorizeFirst');
 
 /* POST new answer */
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
     const body = req.body;
     console.log(body)
     await search(body)

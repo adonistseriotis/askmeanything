@@ -6,7 +6,5 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import './index.css';
 
 ReactDOM.render(
-<React.StrictMode>
-        <App />
-</React.StrictMode>,
+        <App />,
 document.getElementById('root'));           

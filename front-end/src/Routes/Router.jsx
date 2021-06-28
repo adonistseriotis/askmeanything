@@ -7,17 +7,25 @@ import ProtectedRoute from './ProtectedRoute';
 import LandingView from '../components/LandingView/LandingView';
 import GetQuestion from '../components/Question/QuestionView';
 import UpdateQuestion from '../components/UpdateQuestion/UpdateQuestion';
+import NavigationBar from '../components/NavigationBar/NavigationBar';
+import MyAskMeAnything from '../components/MyAskMeAnything/MyAskMeAnything';
+
 const Router = () => {
     return (
         <BrowserRouter>
           <Switch>
-            <Route path="/home" component={LandingView} />
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
-            <Route path="/create-question" component ={CreateQuestion}/>  
-            <Route path="/question" component={GetQuestion} />
-            <Route path="/update-question" component= {UpdateQuestion} />
+            <React.Fragment>
+              <NavigationBar/>
+              <Route path="/home" component={LandingView} />
+              <Route path="/create-question" component ={CreateQuestion}/>  
+              <Route path="/question" component={GetQuestion} />
+              <Route path="/update-question" component= {UpdateQuestion} />
+              <Route path="/myaskmeanything" component={MyAskMeAnything} />
+            </React.Fragment>
             <Redirect to="/home"/>
+            
           </Switch>
         </BrowserRouter>
     )

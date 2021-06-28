@@ -1,4 +1,11 @@
 const cardStyle = {
+    anchor: {
+        heigth: '25vh',
+        width :'30vw',
+        margin: 10,
+        cursor:'pointer',
+        justify:'center'
+    },
     root:{
         height: '50vh',
         width :'30vw',
@@ -14,7 +21,7 @@ const cardStyle = {
     },
     calendar: {
         height: '50vh',
-        width :'50vw',
+        width: '50vw',
         margin: 10,
         justify:'center',
     }

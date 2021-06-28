@@ -5,7 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import {useHistory} from 'react-router-dom';
-import { Typography, Chip } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root :{ 
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const QuestionFeedQuestion = ({question}) => {
+const QuestionFeedAnswer = ({answer}) => {
     const classes = useStyles();
     const history = useHistory();
     const [raised, setRaised] = useState(false);
@@ -25,7 +25,7 @@ const QuestionFeedQuestion = ({question}) => {
     }
 
     const redirect = () => {
-        const path = '/question?id=' + question.questionid;
+        const path = '/question?id=' + answer.questionID;
         console.log(path)
         history.push(path);
     }
@@ -41,19 +41,14 @@ const QuestionFeedQuestion = ({question}) => {
             <CardHeader
               avatar={
                 <Avatar aria-label="recipe" style={{backgroundColor: '#3b3c36'}}>
-                  {question.username[0]}
+                  {answer.username[0]}
                 </Avatar>
               }
-              title={question.questiontitle}
-              subheader={`${question.questiondatecreated}`}
+              subheader={`${answer.datetime}`}
             />
             <CardContent>
-            {question.keywords ? question.keywords.map(keyword => {
-                return keyword.value ?
-                    <Chip style={{marginRight:5}} label={keyword.label} key={keyword.value} /> : null}
-            ) : null}
             <Typography variant="body2" color="textSecondary" component="p">
-            {question.questionbody}
+            {answer.body}
             </Typography>
 
             </CardContent>
@@ -61,4 +56,4 @@ const QuestionFeedQuestion = ({question}) => {
     )
 }
 
-export default QuestionFeedQuestion
+export default QuestionFeedAnswer

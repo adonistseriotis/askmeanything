@@ -9,11 +9,11 @@ import Link from '@material-ui/core/Link'
 import cardStyle from './LandingViewCardStyle';
 import { Typography } from '@material-ui/core';
 import PieChart from '../../Charts/PieChart';
-import { getQuestionsPerKeyword, getQuestionsPerDay } from '../../../Services/axiosConfig';
+import { getQuestionsPerKeyword, getQuestionsPerDay, myQuestionsPerDay } from '../../../Services/axiosConfig';
 
 const useStyles = makeStyles(cardStyle);
 
-const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart}) => {
+const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart, isAnchor=false, onClick=null}) => {
     const classes = useStyles();
     const [chartData, setChartData] = useState(null)
 
@@ -41,7 +41,17 @@ const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart}
             setChartData(format)
           })
           .catch(err => console.log(err))
-
+        
+        case "MyQuestionsPerDay":
+          myQuestionsPerDay()
+          .then(data => {
+            console.log(data)
+            const format = data.data.map(row => ([new Date(row.day), parseInt(row.count)]))
+            format.unshift([{ type: 'date', id: 'Date' }, { type: 'number', id: 'Questions/Day' }] )
+            console.log("data to be inserted",format)
+            setChartData(format)
+          })
+          .catch(err => console.log(err))
         default:
           break;
       }
@@ -53,7 +63,8 @@ const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart}
 
     return (
         <Card 
-          className={isChart ? ( chartType==="Calendar" ? classes.calendar : classes.rootChart) :classes.root}
+          className={isChart ? ( chartType==="Calendar" ? classes.calendar : classes.rootChart) : isAnchor ? classes.anchor : classes.root}
+          onClick={onClick ? onClick : void(0)}
           >
             <CardHeader
               title={title}

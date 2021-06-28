@@ -12,7 +12,10 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import CreateIcon from '@material-ui/icons/Create'
 import Paper from '@material-ui/core/Paper';
+import { IconButton } from "@material-ui/core";
+import Tooltip from '@material-ui/core/Tooltip'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -72,6 +75,10 @@ export default function GetQuestion() {
             console.log(err)
         })
     }
+
+    const handleUpdate = () => {
+        history.push('/update-question?id='+question.questionid)
+    }
     
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -127,6 +134,12 @@ export default function GetQuestion() {
                                 </Typography>
                             </Grid>
                         : null}
+                        <div style={{flex: 1}} />
+                        <Tooltip title="Update question">
+                            <IconButton onClick={handleUpdate}>
+                                <CreateIcon />
+                            </IconButton>
+                        </Tooltip>
                     </Grid>
 
                     <Grid item container xs={12} style={{backgroundColor:'black'}}>

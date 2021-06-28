@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import LandingViewCard from '../Recyclable/LandingViewCard/LandingViewCard';
@@ -9,6 +9,11 @@ const useStyles = makeStyles(homeStyle);
 
 const LandingView = () => {
     const classes = useStyles();
+    const ref = useRef(null);
+
+    const scroll = () => {
+        ref.current.scrollIntoView();
+    }
 
     const testCards = [
         {
@@ -18,16 +23,6 @@ const LandingView = () => {
             chartTitle:"QuestionsPerKeyword",
             isChart:true
         },
-        // {
-        //     title:"Ask a new question",
-        //     subtitle: "Click here to ask a new question",
-        //     link:"/create-question"
-        // },
-        // {
-        //     title:"Answer a question",
-        //     subtitle:"",
-        //     link:""
-        // },
         {
             title:"Questions per Day",
             subtitle:"Graph/Table",
@@ -55,7 +50,9 @@ const LandingView = () => {
                     </Grid>))}
             </Grid>
             <Grid item container direction='row' xs={8}>
-                <QuestionFeed />
+                <div ref={ref}>
+                    <QuestionFeed origin='home' hasSearchBar={true} scroll={scroll}/>
+                </div>
             </Grid>
         </Grid>
     )
