@@ -78,6 +78,18 @@ services:
         depends_on: 
             - "service_bus"
         command: ["./wait-for-it.sh", "localhost:4000", "--", "node", "index.js"]
-
+    
+    frontend:
+        container_name: frontend
+        build: ./front-end
+        volumes:
+            - .:/usr/app
+            - /usr/app/node_modules
+        network_mode: "host"
+        stdin_open: true
+        command: npm start
+        restart: on-failure
+        depends_on: 
+            - "dal"
 volumes:
   pg_data:

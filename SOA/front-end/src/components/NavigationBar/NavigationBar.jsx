@@ -37,6 +37,7 @@ const NavigationBar = props => {
         logout();
         setIsAuth(false);
         setOpen(false);
+        history.push('/home')
     }
     
     const handleMyAsk = () => {

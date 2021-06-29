@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
+import { TextField } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,11 +31,10 @@ export default function SearchBar({handleSearch, filter, setFilter}) {
   const classes = useStyles();
 
   return (
-    <Paper component="form" className={classes.root} elevation={3}>
-      <InputBase
+    <Paper className={classes.root} elevation={3}>
+      <TextField
         className={classes.input}
         placeholder="Search Questions"
-        inputProps={{ 'aria-label': 'search google maps' }}
         value={filter}
         onChange={(e) => {setFilter(e.target.value)}}
         onKeyPress={(e) => {

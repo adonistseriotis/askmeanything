@@ -1,7 +1,8 @@
-import { Typography,Container, TextField ,Button,makeStyles,Grid, Box } from "@material-ui/core";
-import {React, useState} from "react";
-import Autocomplete , {createFilterOptions} from '@material-ui/lab/Autocomplete';
-import { createQuestion } from '../../Services/axiosConfig'
+import React, {useState, useEffect } from "react";
+
+import { Typography, Container, TextField, Button, makeStyles, Grid, Box } from "@material-ui/core";
+import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import { createQuestion, getKeywords } from '../../Services/axiosConfig'
 
 
 
@@ -12,10 +13,10 @@ const useStyles = makeStyles((theme) => ({
         marginTop: 20,
         marginBottom: 20,
         display: 'block'
-    } ,
-    submit:  {
+    },
+    submit: {
         margin: theme.spacing(2, 5, 0),
-      } ,
+    },
     centerBox: {
         display: "flex",
         justifyContent: "flex-end",
@@ -24,19 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const data = [
-    {label: "sports", value: 1},
-    {label: "music", value: 2},
-    {label: "Tech", value: 3},
-    {label: "Sex", value: 4}
-]
-
-
-
-
 export default function CreateQuestion() {
-  
-    
+
+
 
     const classes = useStyles();
 
@@ -44,13 +35,14 @@ export default function CreateQuestion() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [keywords, setKeywords] = useState('');
+    const [dbKeywords, setDbKeywords] = useState([])
 
     const [errorMessage, setErrorMessage] = useState('');
     const [error, setError] = useState(false);
 
     const handleKeywordChange = (value) => {
         setKeywords(value)
-        
+
     }
 
     const onTitleChange = e => {
@@ -63,35 +55,43 @@ export default function CreateQuestion() {
 
 
     const handleSubmit = () => {
-        createQuestion(title,content,keywords)
+        createQuestion(title, content, keywords)
         console.log(keywords)
-        
+
     }
     const handleEnter = (e) => {
-        if(e.code === "Enter")
+        if (e.code === "Enter")
             handleSubmit()
     }
-  
+
+    useEffect(() => {
+        getKeywords()
+            .then(data => {
+                setDbKeywords(data.keywords)
+            })
+            .catch(err => console.error(err))
+    }, [])
+
     return (
         <Grid>
             <Container>
                 <Typography
-                    variant = "h6"
-                    color = "primary"
-                    component = "h2"
+                    variant="h6"
+                    color="primary"
+                    component="h2"
                 >
                     Add a new question!
                 </Typography>
                 <form noValidate>
                     <TextField
-                        className= {classes.field}
-                        id = "title"
+                        className={classes.field}
+                        id="title"
                         label="Title"
                         name="title"
                         autoFocus
-                        value = {title}
-                        variant= "outlined"
-                        color = "primary"
+                        value={title}
+                        variant="outlined"
+                        color="primary"
                         fullWidth
                         required
                         onChange={onTitleChange}
@@ -99,82 +99,82 @@ export default function CreateQuestion() {
                     <Autocomplete
                         multiple
                         id="tags-filled"
-                        options={data}
+                        options={dbKeywords}
                         getOptionLabel={(option) => {
                             // e.g value selected with enter, right from the input
                             if (typeof option === 'string') {
-                              return option;
+                                return option;
                             }
-                            if(option.inputValue){
+                            if (option.inputValue) {
                                 return option.inputValue;
                             }
                             if (option.label) {
-                              return option.label;
+                                return option.label;
                             }
                             return option.label;
-                          }}
-                        renderOption={(option)=> option.label}
+                        }}
+                        renderOption={(option) => option.label}
                         freeSolo
                         filterOptions={(options, params) => {
                             const filtered = filter(options, params);
                             if (params.inputValue !== '') {
-                              filtered.push({
-                                inputValue: params.inputValue,
-                                label: `Add "${params.inputValue}"`,
-                                
-                              });
+                                filtered.push({
+                                    inputValue: params.inputValue,
+                                    label: `Add "${params.inputValue}"`,
+
+                                });
                             }
-                  
+
                             return filtered;
                         }}
                         onChange={(event, newValue) => {
                             setKeywords(newValue.map((item, num) => {
-                                if(typeof item === 'string')
+                                if (typeof item === 'string')
                                     return {
-                                        label:item,
-                                        value:num,
+                                        label: item,
+                                        value: num,
                                         '_isNew_': true
                                     }
-                                if(item.inputValue)
+                                if (item.inputValue)
                                     return {
-                                        label:item.inputValue,
-                                        value:num ,
+                                        label: item.inputValue,
+                                        value: num,
                                         "__isNew__": true
                                     }
-                                if(item.value)
+                                if (item.value)
                                     return {
-                                        label:item.label,
-                                        value:num
-                                    }   
+                                        label: item.label,
+                                        value: num
+                                    }
                             }))
-                          }}
+                        }}
                         renderInput={(params) => (
-                        <TextField {...params} variant="outlined" label="Keywords" className = {classes.field}/>
+                            <TextField {...params} variant="outlined" label="Keywords" className={classes.field} />
                         )}
                     />
                     <TextField
-                        className = {classes.field}
-                        id = "content"
-                        label = "Content"
+                        className={classes.field}
+                        id="content"
+                        label="Content"
                         name="content"
-                        value= {content}
+                        value={content}
                         variant="outlined"
-                        color = "primary"
+                        color="primary"
                         multiline
-                        rows = {12}
+                        rows={12}
                         fullWidth
                         required
                         onChange={onContentChange}
                     />
-                    <Box 
-                        className = {classes.centerBox}
-                        component = "span" 
-                        m = {1} >
-                        <Button 
-                            variant ="outlined"
+                    <Box
+                        className={classes.centerBox}
+                        component="span"
+                        m={1} >
+                        <Button
+                            variant="outlined"
                             onClick={handleSubmit}
-                            >
-                            
+                        >
+
                             Submit
                         </Button>
                     </Box>
@@ -182,4 +182,4 @@ export default function CreateQuestion() {
             </Container>
         </Grid>
     );
-  }
+}

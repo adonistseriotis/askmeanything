@@ -23,6 +23,7 @@ const searchRouter = require('../routes/searchRoute');
 const myquestionsRouter = require('../routes/myquestionsRoute');
 const myanswersRouter = require('../routes/myanswersRoute')
 const myquestionsPerDayRouter = require('../routes/myquestionsPerDayRoute');
+const keywordsRouter = require('../routes/keywordsRoute');
 
 class ExpressLoader {
     constructor () {
@@ -56,7 +57,8 @@ class ExpressLoader {
         app.use('/myquestions', myquestionsRouter);
         app.use('/myanswers', myanswersRouter);
         app.use('/myquestionsperday', myquestionsPerDayRouter);
-
+        app.use('/keywords', keywordsRouter);
+        
         /* Start listening */
 
         this.server = app.listen(process.env.PORT, () => {

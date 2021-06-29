@@ -199,4 +199,12 @@ export async function search(filter) {
     .catch(error => {throw error});
 }
 
+export async function getKeywords() {
+    return await axiosInstanceQuestionAnswerService
+    .get('/keywords')
+    .then(response => {
+        return response.data
+    })
+    .catch(error => {throw error});
+}
 export default axiosInstanceAuthService;
