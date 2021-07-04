@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { vuQuestionAnswers } from '../../models/vuQuestionAnswers';
+import { vuQuestions } from '../../models/vuQuestions';
 
 @Injectable()
 export class QuestionsService {
@@ -27,6 +28,17 @@ export class QuestionsService {
         }
         catch(error){
             console.error(error)
+        }
+    }
+
+    async questionFeed(): Promise<Array<vuQuestions>> {
+        try{
+            const questionFeed = await this.manager.find(vuQuestions);
+            console.log('QuestionFeed', questionFeed)
+            return questionFeed
+        }
+        catch(error) {
+            console.log(error)
         }
     }
 
