@@ -1,9 +1,7 @@
 import { Typography,Chip, TextField ,Button,makeStyles,Grid, Box, Divider } from "@material-ui/core";
-import {React, useState, useEffect} from "react";
-import { getQuestion, answer } from '../../Services/axiosConfig'
-import { useHistory } from 'react-router-dom';
-import LoadingScreen from '../LoadingScreen/LoadingScreen';
-import ErrorPage from '../ErrorPage/ErrorPage';
+import React, {useState, useEffect} from "react";
+import LoadingScreen from '../components/LoadingScreen';
+import ErrorPage from '../components/ErrorPage';
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
 import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
@@ -55,11 +53,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function GetQuestion({question}) {
+function GetQuestion({question}) {
+    console.log(question)
     // const [question, setQuestion] = useState(null);
-    const history = useHistory();
     const [newAnswer, setNewAnswer] = useState('');
-    const [refresh, setRefresh] = useState(false);
+    // const [refresh, setRefresh] = useState(false);
 
     const onNewAnswerChange = (e) => {
         setNewAnswer(e.target.value)
@@ -69,7 +67,7 @@ export default function GetQuestion({question}) {
         answer(question.questionid, newAnswer)
         .then(res => {
             console.log(res);
-            setRefresh(prev => !prev)
+            // setRefresh(prev => !prev)
         })
         .catch(err => {
             console.log(err)
@@ -77,26 +75,26 @@ export default function GetQuestion({question}) {
     }
 
     const handleUpdate = () => {
-        history.push('/update-question?id='+question.questionid)
+        // history.push('/update-question?id='+question.questionid)
     }
     
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.has('id') ? params.get('id') : -1;
-        if(id < 1)
-        {
-            history.push("/home");
-        }
+    // useEffect(() => {
+    //     const params = new URLSearchParams(window.location.search);
+    //     const id = params.has('id') ? params.get('id') : -1;
+    //     if(id < 1)
+    //     {
+    //         // history.push("/home");
+    //     }
 
-        getQuestion(id)
-        .then(res => {
-            setQuestion(res.question[0])
-            console.log(res.question[0])
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }, [refresh])
+    //     getQuestion(id)
+    //     .then(res => {
+    //         setQuestion(res.question[0])
+    //         console.log(res.question[0])
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //     })
+    // }, [refresh])
 
     const classes = useStyles();
 
@@ -222,3 +220,10 @@ export default function GetQuestion({question}) {
                 : <LoadingScreen/> 
     )
   }
+
+  GetQuestion.getInitialProps = res => {
+    const { query } = res;
+    return { ...query };
+  };
+
+export default GetQuestion;

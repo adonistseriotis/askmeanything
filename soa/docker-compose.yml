@@ -12,7 +12,7 @@ services:
         ports:
             - "54320:5432"
         volumes:
-            - $HOME/Documents/SaaS/SOA/docker-volume
+            - $HOME/Documents/SaaS/soa/docker-volume
             - pg_data:/var/lib/postgresql/data/
             - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
         healthcheck:

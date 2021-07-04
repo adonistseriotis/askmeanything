@@ -1,31 +1,37 @@
-import { Column } from 'typeorm'
+import { ViewColumn, ViewEntity } from 'typeorm'
+
+@ViewEntity('vuQuestionAnswers',{
+    expression: `
+        SELECT * FROM public."vuQuestionAnswers"
+    `
+})
 
 export class vuQuestionAnswers {
-    @Column()
+    @ViewColumn()
     questionid: number;
 
-    @Column()
+    @ViewColumn()
     questiontitle: string;
 
-    @Column()
+    @ViewColumn()
     questionbody: string;
 
-    @Column()
+    @ViewColumn()
     questiondatecreated: string;
 
-    @Column()
+    @ViewColumn()
     questionisedited: boolean;
 
-    @Column()
+    @ViewColumn()
     questiondateupdated: string;
 
-    @Column()
+    @ViewColumn()
     username: string;
 
-    @Column()
+    @ViewColumn()
     answers: JSON;
 
-    @Column()
+    @ViewColumn()
     keywords: JSON;
 
 }

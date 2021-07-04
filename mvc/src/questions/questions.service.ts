@@ -4,13 +4,13 @@ import { EntityManager } from 'typeorm';
 import { vuQuestionAnswers } from '../../models/vuQuestionAnswers';
 
 @Injectable()
-export class UsersService {
-    constructor(@InjectEntityManager() private em: EntityManager) {}
+export class QuestionsService {
+    constructor(@InjectEntityManager() private manager: EntityManager) {}
 
     async findOne(id: number): Promise<vuQuestionAnswers> {
         try {
-            const question = await this.em.query("f_getquestion(?)",[id]);
-
+            const question = await this.manager.findOne(vuQuestionAnswers, {questionid: id} );
+            console.log('Service', question)
             return question
         }
         catch(error){

@@ -7,7 +7,7 @@ const connectionOptions: ConnectionOptions = {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    entities: ['entities/*.ts'],
+    entities: ['entities/*.ts',"models/*.ts"],
     synchronize: false
 }
 
