@@ -11,7 +11,7 @@ import {ViewEntity, ViewColumn} from "typeorm";
 })
 
 
-export class vuAnswers {
+export class vuQuestionsPerDay {
 
     @ViewColumn()
     count: BigInteger

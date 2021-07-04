@@ -12,7 +12,7 @@ import { View } from "typeorm/schema-builder/view/View";
 })
 
 
-export class vuAnswers {
+export class vuQuestionsPerDayPerUser {
 
     @ViewColumn()
     count: BigInteger;
