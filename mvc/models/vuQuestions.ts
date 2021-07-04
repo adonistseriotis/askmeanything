@@ -17,13 +17,23 @@ export class vuQuestions {
     row: BigInteger;
 
     @ViewColumn()
-    questionID: number;
+    questionid: number;
 
     @ViewColumn()
     questiontitle: String;
 
     @ViewColumn()
     questionbody: String;
-    
 
+    @ViewColumn()
+    username: String;
+    
+    @ViewColumn()
+    keywords: JSON;
+
+    @ViewColumn()
+    questiondatecreated: String;
+
+    @ViewColumn()
+    search: String;
 }

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { EntityManager } from 'typeorm';
+import { EntityManager, Like } from 'typeorm';
 import { vuQuestionAnswers } from '../../models/vuQuestionAnswers';
 import { vuQuestions } from '../../models/vuQuestions';
 
@@ -34,10 +34,20 @@ export class QuestionsService {
     async questionFeed(): Promise<Array<vuQuestions>> {
         try{
             const questionFeed = await this.manager.find(vuQuestions);
-            console.log('QuestionFeed', questionFeed)
             return questionFeed
         }
         catch(error) {
+            console.log(error)
+        }
+    }
+
+    async search(filter: string): Promise<Array<vuQuestions>> {
+        try{
+            console.log(filter)
+            const questionFeed = await this.manager.getRepository(vuQuestions).find({where: { search: Like(`%${filter}%`)}})
+            return questionFeed
+        }
+        catch(error){
             console.log(error)
         }
     }

@@ -32,4 +32,26 @@ export class QuestionsController {
       query: { id: questionID}
     }))
   }
+
+  @Get('/home')
+  @Render('LandingView')
+  async getLandingPage() {
+    const questionFeed = await this.questionService.questionFeed();
+    // console.log(questionFeed)
+
+    return {
+      questionFeed: questionFeed
+    };
+  }
+
+  @Post('/search')
+  @Render('LandingView')
+  async search(@Body() body) {
+    const questionFeed = await this.questionService.search(body.filter);
+    console.log(questionFeed)
+    return {
+      questionFeed: questionFeed
+    }
+  }
+
 }

@@ -20,7 +20,7 @@ export class vuAnswers {
     body: String;
 
     @ViewColumn()
-    datetime: Text;
+    datetime: String;
 
     @ViewColumn()
     username: String;
