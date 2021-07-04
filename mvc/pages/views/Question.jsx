@@ -13,7 +13,9 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import CreateIcon from '@material-ui/icons/Create'
 import Paper from '@material-ui/core/Paper';
 import { IconButton } from "@material-ui/core";
-import Tooltip from '@material-ui/core/Tooltip'
+import Tooltip from '@material-ui/core/Tooltip';
+import { answer } from '../config/axiosConfig';
+import { getUsername } from "../config/auth";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +55,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function GetQuestion({question}) {
+function GetQuestion(props) {
+    const question = props.question;
     console.log(question)
     // const [question, setQuestion] = useState(null);
     const [newAnswer, setNewAnswer] = useState('');
@@ -107,7 +110,7 @@ function GetQuestion({question}) {
                         <Typography variant='h4' color='textPrimary'>{question.questiontitle}</Typography>
                     </Grid>
 
-                    <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'red'}} */>
+                    <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'red'}} */ >
                         {question.keywords.map(keyword => (
                             <Chip style={{margin:5}} label={keyword.label} key={keyword.value} />
                         ))}
@@ -179,12 +182,12 @@ function GetQuestion({question}) {
                 
             </Grid>
                 <Grid item container xs={10} /* style={{backgroundColor:'red'}} */>
-                    <form noValidate style={{width:'100%'}}>
+                    <form noValidate style={{width:'100%'}} id='newAnswer' action='/answer' method="post">
                         <TextField
                             className = {classes.field}
                             id = "answer"
                             label = "Answer"
-                            name="answer"
+                            name="body"
                             value= {newAnswer}
                             variant="outlined"
                             color = "primary"
@@ -193,6 +196,20 @@ function GetQuestion({question}) {
                             fullWidth
                             required
                             onChange={onNewAnswerChange}
+                        />
+                        <TextField
+                            id="questionid"
+                            name="qid"
+                            value={question.questionid}
+                            hidden={true}
+                            type="hidden"
+                        />
+                        <TextField
+                            id="username"
+                            name="username"
+                            value={'babis'}
+                            hidden={true}
+                            type="hidden"
                         />
                         <Box 
                             className={classes.centerBox}
@@ -208,7 +225,9 @@ function GetQuestion({question}) {
                             </Button>
                             <Button 
                                 variant ="outlined"
-                                onClick={handleSubmit}
+                                type="submit"
+                                form="newAnswer"
+                                value="Submit"
                             >
                                 Submit
                             </Button>

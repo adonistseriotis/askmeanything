@@ -17,4 +17,17 @@ export class QuestionsService {
             console.log('Error', error)
         }
     }
+
+    async answer(qid: number, body: string, username: string): Promise<number> {
+        try{
+            let returnableqid;
+            const returnable = await this.manager.query("CALL public.sp_answer($1, $2, $3, $4)",[qid, body, username, returnableqid])
+            console.log('Returnable',returnable);
+            return returnable[0].returnableqid
+        }
+        catch(error){
+            console.error(error)
+        }
+    }
+
 }
