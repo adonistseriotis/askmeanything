@@ -12,7 +12,8 @@ const PieChart = ({data, chartType, title}) => {
             data={data}
             options={{
 
-            // Just add this option
+            chartArea : {top:12},
+            legend : {position : 'left'}
             }}
       />
     )

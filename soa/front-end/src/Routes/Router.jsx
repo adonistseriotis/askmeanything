@@ -18,6 +18,7 @@ const Router = () => {
             <Route path="/signup" component={SignUp} />
             <React.Fragment>
               <NavigationBar/>
+              <Redirect exact from="/" to="/home"/>
               <Route path="/home" component={LandingView} />
               <Route path="/create-question" component ={CreateQuestion}/>  
               <Route path="/question" component={GetQuestion} />
