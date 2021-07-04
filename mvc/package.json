@@ -28,6 +28,8 @@
     "@nestjs/core": "^5.4.0",
     "@nestjs/typeorm": "^7.1.5",
     "@zeit/next-typescript": "^1.1.1",
+    "axios": "^0.21.1",
+    "jwt-decode": "^3.1.2",
     "nest-next": "^0.3.0",
     "next": "^8.0.1",
     "passport": "^0.4.1",

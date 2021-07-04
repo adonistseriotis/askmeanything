@@ -13,7 +13,8 @@ import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import CreateIcon from '@material-ui/icons/Create'
 import Paper from '@material-ui/core/Paper';
 import { IconButton } from "@material-ui/core";
-import Tooltip from '@material-ui/core/Tooltip'
+import Tooltip from '@material-ui/core/Tooltip';
+import { answer } from '../config/axiosConfig';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -107,7 +108,7 @@ function GetQuestion({question}) {
                         <Typography variant='h4' color='textPrimary'>{question.questiontitle}</Typography>
                     </Grid>
 
-                    <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'red'}} */>
+                    <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'red'}} */ >
                         {question.keywords.map(keyword => (
                             <Chip style={{margin:5}} label={keyword.label} key={keyword.value} />
                         ))}
