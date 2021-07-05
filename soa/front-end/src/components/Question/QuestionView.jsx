@@ -1,5 +1,5 @@
 import { Typography,Chip, TextField ,Button,makeStyles,Grid, Box, Divider } from "@material-ui/core";
-import {React, useState, useEffect} from "react";
+import React, { useState, useEffect} from "react";
 import { getQuestion, answer } from '../../Services/axiosConfig'
 import { useHistory } from 'react-router-dom';
 import LoadingScreen from '../LoadingScreen/LoadingScreen';

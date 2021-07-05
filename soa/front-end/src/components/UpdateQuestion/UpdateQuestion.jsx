@@ -1,8 +1,9 @@
-import { Typography,Container, TextField ,Button,makeStyles,Grid, Box } from "@material-ui/core";
+import { Typography,Container, TextField ,Button,makeStyles,Grid, Box , Chip} from "@material-ui/core";
 import {React, useState ,useEffect} from "react";
 import NavigationBar from '../NavigationBar/NavigationBar';
 import Autocomplete , {createFilterOptions} from '@material-ui/lab/Autocomplete';
 //import { UpdateQuestion } from '../../Services/axiosConfig'
+import { getQuestion, getKeywords } from '../../Services/axiosConfig'
 
 
 
@@ -21,35 +22,73 @@ const useStyles = makeStyles((theme) => ({
         display: "flex",
         justifyContent: "flex-end",
         alignItems: "flex-end"
+    },
+    chip: {
+        margin: theme.spacing(0.5),
+      },
+    chips: { 'list-style' : 'none' 
     }
 
 }));
 
-const options = [
-    {name: "sports", ID: 1},
-    {name: "music", ID: 2},
-    {name: "Tech", ID: 3},
-    {name: "Sex", ID: 4}
-]
 
-export default function UpdateQuestion({oldtitle, oldcontent, oldkeywords}) {
+export default function UpdateQuestion() {
   
  
-    oldtitle = 'adsfdsd'
-    oldcontent = 'asdfasdf'
-    oldkeywords = [
-        {name: "music", ID: 2},
-        {name: "Tech", ID: 3},
-        {name: "Sex", ID: 4}
-    ]
+  
+    
+
     
     const classes = useStyles();
-
-    const [title, setTitle] = useState(oldtitle);
-    const [content, setContent] = useState(oldcontent);
-    const [keywords, setKeywords] = useState(oldkeywords);
+    const [question, setQuestion] = useState(null);
+    const [title, setTitle] = useState(null);
+    const [content, setContent] = useState(null);
+    const [keywords, setKeywords] = useState([]);
     const [errorMessage, setErrorMessage] = useState('');
     const [error, setError] = useState(false);
+    const [dbKeywords,setDbKeywords] = useState('')
+    const [NewKeywords,setNewKeywords] = useState('')
+
+
+        
+
+
+    useEffect(() => {
+        
+        getKeywords()
+            .then(data => {
+                setDbKeywords(data.keywords)
+            })
+            .catch(err => console.error(err))
+
+        const params = new URLSearchParams(window.location.search);
+        const id = params.has('id') ? params.get('id') : -1;
+        if(id < 1)
+            {
+                window.history.push("/home");
+            }
+    
+        getQuestion(id)
+        .then(res => {
+                setQuestion(res.question[0])
+                console.log("hi",res.question[0].keywords)
+                setTitle(res.question[0].questiontitle)
+                setKeywords(res.question[0].keywords)
+                setContent(res.question[0].questionbody)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+
+    }, [])
+
+    const handleDelete = (chipToDelete) => () => {
+        setKeywords((keywords) => keywords.filter((keyw) => keyw.value !== chipToDelete.value));
+        console.log(chipToDelete)
+      };
+
+    
+    
 
     const handleKeywordChange = (value) => {
         setKeywords(value)
@@ -75,13 +114,7 @@ export default function UpdateQuestion({oldtitle, oldcontent, oldkeywords}) {
             handleSubmit()
     }
 
-    const getMax = () => {
-        return options.length + 1
-    }
 
-    useEffect(() => {
-        console.log(keywords)
-    },[keywords])
 
     return (
         <Grid>
@@ -93,11 +126,27 @@ export default function UpdateQuestion({oldtitle, oldcontent, oldkeywords}) {
                 >
                     Edit your Question!
                 </Typography>
+                <Grid item container direction={'row'} xs={12} > 
+                    {keywords.map((keyword) => {
+                        
+                        return (
+                        <li key={keyword.value} className = {classes.chips}>
+                            <Chip
+                            label={keyword.label}
+                            onDelete={handleDelete(keyword)}
+                            className={classes.chip}
+                            />
+                        </li>
+                        );
+                    })}
+                        
+                        
+                </Grid>
                 <form noValidate>
                     <TextField
                     className= {classes.field}
                     id = "title"
-                    label="Title"
+                    //label="Title"
                     name="title"
                     autoFocus
                     value = {title}
@@ -107,56 +156,68 @@ export default function UpdateQuestion({oldtitle, oldcontent, oldkeywords}) {
                     required
                     onChange={onTitleChange}
                     />
+                    
                     <Autocomplete
                         multiple
-                        id="keywords"
-                        label="Keywords"
-                        name = "keywords"
-                        value = {keywords}
-                        options={options}
-                        getOptionLabel={(selected) => {
+                        id="tags-filled"
+                        options={dbKeywords}
+                        getOptionLabel={(option) => {
                             // e.g value selected with enter, right from the input
-                            if(selected)
-                                return selected.name
-                            else
-                                return 'WTF'
+                            if (typeof option === 'string') {
+                                return option;
+                            }
+                            if (option.inputValue) {
+                                return option.inputValue;
+                            }
+                            if (option.label) {
+                                return option.label;
+                            }
+                            return option.label;
                         }}
-                        // renderOption={(option)=> option.label}
+                        renderOption={(option) => option.label}
                         freeSolo
                         filterOptions={(options, params) => {
-                            const re = new RegExp(`.*${params.inputValue}.*`)
-                            const filtered = options.filter(option => re.test(option.name))
-                            
-                            if(filtered.length === 0){
+                            const filtered = filter(options, params);
+                            if (params.inputValue !== '') {
                                 filtered.push({
-                                    name: `Add keyword "${params.inputValue}"`,
-                                    ID: getMax()
-                                })
+                                    inputValue: params.inputValue,
+                                    label: `Add "${params.inputValue}"`,
+
+                                });
                             }
-                            
-                            return filtered
+
+                            return filtered;
                         }}
-                        onChange={(event, keywords) => {
-                            const newKeywords = keywords.map(keyword => {
-                                if(typeof keyword === 'string'){
-                                    //means it's new
+                        onChange={(event, newValue) => {
+                            setNewKeywords(newValue.map((item, num) => {
+                                if (typeof item === 'string')
                                     return {
-                                        name: keyword,
-                                        ID: getMax()
+                                        label: item,
+                                        value: num,
+                                        '_isNew_': true
                                     }
-                                }
-                            })
-                            
-                            setKeywords(newKeywords)
+                                if (item.inputValue)
+                                    return {
+                                        label: item.inputValue,
+                                        value: num,
+                                        "__isNew__": true
+                                    }
+                                if (item.value)
+                                    return {
+                                        label: item.label,
+                                        value: num
+                                    }
+                            }))
+                    
                         }}
-                        renderInput={(params) => {
-                            return <TextField {...params} variant="outlined" label="Keywords" className = {classes.field}/>
-                        }}
+                        renderInput={(params) => (
+                            <TextField {...params} variant="outlined" label="Keywords" className={classes.field} />
+                        )}
                     />
                     <TextField
                         className = {classes.field}
                         id = "content"
-                        label = "Content"
+                        //label = "Content"
                         name="content"
                         value= {content}
                         variant="outlined"
