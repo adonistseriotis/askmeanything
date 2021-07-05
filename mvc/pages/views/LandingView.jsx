@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import LandingViewCard from '../components/LandingViewCard';
@@ -20,6 +20,7 @@ const LandingView = (props) => {
     // console.log(props)
     // const classes = useStyles();
     const ref = useRef(null);
+    const [feed, setFeed] = useState(questionFeed)
 
     const scroll = () => {
         ref.current.scrollIntoView();
@@ -64,7 +65,7 @@ const LandingView = (props) => {
             </Grid>
             <Grid item container direction='row' xs={8}>
                 <div ref={ref}>
-                    <QuestionFeed feed={questionFeed} origin='home' hasSearchBar={true} scroll={scroll} />
+                    <QuestionFeed setFeed={setFeed} feed={feed} origin='home' hasSearchBar={true} scroll={scroll} />
                 </div>
             </Grid>
         </Grid>

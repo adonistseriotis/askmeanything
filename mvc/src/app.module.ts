@@ -19,13 +19,38 @@ import { AnalyticsController } from './analytics/analytics.controller';
 import { AnalyticsModule } from './analytics/analytics.module';
 import * as dbConfig from '../ormconfig';
 import { QuestionsService } from './questions/questions.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { UsersService } from './users/users.service';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dbConfig), AuthModule, UsersModule, QuestionsModule, AnalyticsModule, NextModule
+  imports: [
+    TypeOrmModule.forRoot(dbConfig), 
+    AuthModule, 
+    UsersModule, 
+    QuestionsModule, 
+    AnalyticsModule, 
+    NextModule,
   ],
-  controllers: [AppController, AnalyticsController],
-  providers: [AppService, AnalyticsService, QuestionsService],
+  controllers: [
+    AppController, 
+    AnalyticsController, 
+    AuthController
+  ],
+  providers: [
+    AppService, 
+    AnalyticsService, 
+    QuestionsService, 
+    AuthService, 
+    UsersService,
+    ConfigService,
+  ],
 })
+
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer

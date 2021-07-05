@@ -1,5 +1,9 @@
 import jwt_decode from "jwt-decode";
 import { isAuthorized, AxiosLogout } from "./axiosConfig";
+import Cookies from 'js-cookie'
+import axios from 'axios'
+import { resetWarningCache } from "prop-types";
+
 
 export const isAuthenticated = async () => {
   return await isAuthorized().then(res => res );
@@ -10,14 +14,13 @@ export const logout = () => {
 }
 
 export const getUsername = () => {
-  // const token = window.localStorage.getItem('token');
-  // if(!token){
-  //   return null;
-  // }
-  // else{
-  //     const decoded = jwt_decode(token);
-  //     return decoded.username
-  // }
-  return 'babis'
+  axios.get('/auth/user', {withCredentials: true})
+  .then(res => {
+    console.log(res.data.username)
+    return res.data.username
+  })
+  .catch(() =>{
+    return null
+  })
 }
 

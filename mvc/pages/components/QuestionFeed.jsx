@@ -5,7 +5,7 @@ import { Grid, Typography} from '@material-ui/core';
 import SearchBar from './SearchBar'
 
 
-const QuestionFeed = ({ feed, origin, hasSearchBar, scroll }) => {
+const QuestionFeed = ({ setFeed, feed, origin, hasSearchBar, scroll }) => {
     const [isAnswers, setIsAnswers] = useState(false);
     const [title, setTitle] = useState('');
     const [filter, setFilter] = useState('');
@@ -43,7 +43,7 @@ const QuestionFeed = ({ feed, origin, hasSearchBar, scroll }) => {
     return (
         <Grid container direction='column' justify='center' style={{margin:25}}>
             <Typography variant="h3" color='secondary'> {title}</Typography>
-            {hasSearchBar ? <Grid item container xs={12} justify='center' ><SearchBar filter={filter} setFilter={setFilter}/></Grid> : null}
+            {hasSearchBar ? <Grid item container xs={12} justify='center' ><SearchBar setFeed={setFeed} filter={filter} setFilter={setFilter}/></Grid> : null}
             {feed ?
                 feed.map((item ,row) => (
                     isAnswers ? <QuestionFeedAnswer key={row} answer={item} /> : <QuestionFeedQuestion key={row} question={item}/>

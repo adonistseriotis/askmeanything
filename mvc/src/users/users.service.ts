@@ -2,14 +2,15 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import { Users } from '../../entities/Users';
+import * as bcrypt from 'bcrypt'
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectEntityManager() private em: EntityManager) {}
+    constructor(@InjectEntityManager() private manager: EntityManager) {}
 
     async findOne(username: string): Promise<Users> {
         try {
-            const user = await this.em.findOne(Users, {username: username});
+            const user = await this.manager.findOne(Users, {username: username});
             if(!user )
                 throw new NotFoundException(`User ${username} not found`);
             else
@@ -17,6 +18,31 @@ export class UsersService {
         }
         catch(error){
             console.log('Error', error)
+        }
+    }
+
+    async create(userObject: Users): Promise<Users> {
+        try{
+            const hash = await bcrypt.hash(userObject.password, 10)
+            userObject.password = hash
+            const user = await this.manager.create(Users, userObject);
+            console.log(user)
+            return this.manager.save(user);
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+
+    async authorize(username, password): Promise<boolean> {
+        try{
+            const user = await this.findOne(username)
+            const isMatch = await bcrypt.compare(password, user.password);
+            return isMatch
+        }
+        catch(error){
+            console.log('Authorize dal', error)
+            return false
         }
     }
 }

@@ -111,9 +111,9 @@ function GetQuestion(props) {
                     </Grid>
 
                     <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'red'}} */ >
-                        {question.keywords.map(keyword => (
+                        {question.keywords[0].label ? question.keywords.map(keyword => (
                             <Chip style={{margin:5}} label={keyword.label} key={keyword.value} />
-                        ))}
+                        )) : null}
                     </Grid>
 
                     <Grid item container direction={'row'} xs={12} /* style={{backgroundColor:'green'}} */>

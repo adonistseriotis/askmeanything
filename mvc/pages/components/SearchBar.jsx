@@ -5,6 +5,7 @@ import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import SearchIcon from '@material-ui/icons/Search';
 import { TextField } from '@material-ui/core';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,12 +29,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar({handleSearch, filter, setFilter}) {
+export default function SearchBar({setFeed, handleSearch, filter, setFilter}) {
   const classes = useStyles();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log(filter)
+
+    axios.post('/search', {
+        filter: e.target.filter.value
+    })
+    .then(res => {
+      setFeed(res.data.questionFeed)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
   return (
     <Paper className={classes.root} elevation={3}>
-      <form action='/search' method='post' style={{display:'flex', width:'100%'}}>
+      <form onSubmit={handleSubmit} style={{display:'flex', width:'100%'}}>
+        {/* action='/search' method='post' style={{display:'flex', width:'100%'}}> */}
         <TextField
           className={classes.input}
           placeholder="Search Questions"
