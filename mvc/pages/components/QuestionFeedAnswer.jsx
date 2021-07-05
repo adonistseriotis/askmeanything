@@ -32,7 +32,7 @@ const QuestionFeedAnswer = ({answer}) => {
     }
 
     return (
-      <Link href={'/question?id='+answer.questionID}>
+      <Link href={'/question?id='+answer.questionID} style={{textDecoration: 'none'}}>
         <Card 
           raised={raised} 
           onMouseOver={toggleRaised}

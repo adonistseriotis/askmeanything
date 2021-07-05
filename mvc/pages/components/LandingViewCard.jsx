@@ -35,9 +35,11 @@ const cardStyle = {
 
 const useStyles = makeStyles(cardStyle);
 
-const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart, isAnchor=false, onClick=null}) => {
+const LandingViewCard = ({title, rawChartData=[], subtitle, chartType, chartTitle, link, isChart, isAnchor=false, onClick=null}) => {
     const classes = useStyles();
     const [chartData, setChartData] = useState(null)
+    let format;
+    // getChartData();
 
     const getChartData = () => {
       switch(chartTitle){
@@ -45,10 +47,10 @@ const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart,
           // getQuestionsPerKeyword()
           // .then(data => {
           //   console.log(data)
-          //   const format = data.data.map(row => ([row.name, parseInt(row.count)]))
-          //   format.unshift(['Keywords','Questions Per Keyword'])
-          //   console.log("data to be inserted",format)
-          //   setChartData(format)
+            format = rawChartData.map(row => ([row.name, parseInt(row.count)]))
+            format.unshift(['Keywords','Questions Per Keyword'])
+            setChartData(format)
+            console.log(format)
           // })
           // .catch(err => console.log(err))
           break;
@@ -63,16 +65,19 @@ const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart,
           //   setChartData(format)
           // })
           // .catch(err => console.log(err))
+            format = rawChartData.map(row => ([new Date(row.day), parseInt(row.count)]))
+            format.unshift([{ type: 'date', id: 'Date' }, { type: 'number', id: 'Questions/Day' }] )
+            setChartData(format)
           break;
         
         case "MyQuestionsPerDay":
           // myQuestionsPerDay()
           // .then(data => {
           //   console.log(data)
-          //   const format = data.data.map(row => ([new Date(row.day), parseInt(row.count)]))
-          //   format.unshift([{ type: 'date', id: 'Date' }, { type: 'number', id: 'Questions/Day' }] )
+            format = rawChartData.map(row => ([new Date(row.day), parseInt(row.count)]))
+            format.unshift([{ type: 'date', id: 'Date' }, { type: 'number', id: 'Questions/Day' }] )
           //   console.log("data to be inserted",format)
-          //   setChartData(format)
+            setChartData(format)
           // })
           // .catch(err => console.log(err))
           break;
@@ -83,7 +88,7 @@ const LandingViewCard = ({title, subtitle, chartType, chartTitle, link, isChart,
     }
 
     useEffect(() => {
-      // getChartData();
+      getChartData();
     }, [])
 
     return (

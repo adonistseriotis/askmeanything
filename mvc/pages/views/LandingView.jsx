@@ -31,14 +31,16 @@ const LandingView = (props) => {
             subtitle: "Graph/Table",
             chartType: "PieChart",
             chartTitle: "QuestionsPerKeyword",
-            isChart: true
+            isChart: true,
+            rawChartData: props.questionsPerKeyword
         },
         {
             title: "Questions per Day",
             subtitle: "Graph/Table",
             chartType: "Calendar",
             chartTitle: "QuestionsPerDay",
-            isChart: true
+            isChart: true,
+            rawChartData: props.questionsPerDay
         },
     ]
 
@@ -55,6 +57,7 @@ const LandingView = (props) => {
                                 chartType={row.chartType}
                                 chartTitle={row.chartTitle}
                                 isChart={row.isChart}
+                                rawChartData={row.rawChartData}
                             />
                         </Grid>
                     </Grid>))}

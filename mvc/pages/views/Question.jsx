@@ -12,7 +12,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot';
 import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 import CreateIcon from '@material-ui/icons/Create'
 import Paper from '@material-ui/core/Paper';
-import { IconButton } from "@material-ui/core";
+import { Link } from "@material-ui/core";
 import Tooltip from '@material-ui/core/Tooltip';
 import { answer } from '../config/axiosConfig';
 import { getUsername } from "../config/auth";
@@ -137,9 +137,9 @@ function GetQuestion(props) {
                         : null}
                         <div style={{flex: 1}} />
                         <Tooltip title="Update question">
-                            <IconButton onClick={handleUpdate}>
+                            <Link href={"/update-question?id=" + question.questionid}>
                                 <CreateIcon />
-                            </IconButton>
+                            </Link>
                         </Tooltip>
                     </Grid>
 

@@ -1,12 +1,22 @@
-import { Controller, Get, Render, Res } from '@nestjs/common';
-import { AppService } from './app.service';
-import { QuestionsService } from './questions/questions.service';
+import {
+  IncomingMessage,
+  ServerResponse,
+} from 'http';
+import {
+  Controller,
+  Get,
+  Req,
+  Res,
+} from '@nestjs/common';
+import { NextService } from '@nestpress/next';
 import { Response } from 'express'
 const url = require('url');
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly questionService: QuestionsService) {}
+  constructor(
+    private readonly next: NextService,
+  ) {}
 
   @Get()
   getLandingPage(@Res() res: Response) {

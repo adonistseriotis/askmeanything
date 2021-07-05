@@ -12,7 +12,7 @@ export class AnalyticsService {
 
     async questionsPerDayPerUser(username: String): Promise<Array<vuQuestionsPerDayPerUser>> {
         try {
-            const questionspdpu = await this.manager.find(vuQuestionsPerDayPerUser, {username: username});
+            const questionspdpu = await this.manager.find(vuQuestionsPerDayPerUser, {where: {username: username}});
             console.log('AnalyticsService',questionspdpu)
             return questionspdpu
         }
