@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {useState} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-import { Popper,Grow,Paper,ClickAwayListener,MenuList, Typography , Button , Menu,MenuItem, AppBar} from "@material-ui/core";
+import { Popper,Grow,Paper,ClickAwayListener,MenuList, Typography , Button , Link,MenuItem, AppBar} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -34,10 +34,8 @@ const navigationBarStyle = {
 const useStyles = makeStyles(navigationBarStyle);
 
 const NavigationBar = props => {
+    const [username, setUsername] = useState(props.username)
     const classes = useStyles();
-    const [isAuth, setIsAuth] = useState(false)
-
-    console.log(props)
     const [open, setOpen] = useState(false);
     const anchorRef = React.useRef(null);
 
@@ -58,6 +56,12 @@ const NavigationBar = props => {
         // setIsAuth(false);
         // setOpen(false);
         // history.push('/home')
+        axios.post('/auth/logout')
+        .then(() => {
+            localStorage.removeItem('username');
+            window.location.reload()
+        })
+        .catch((err) => console.log(err))
     }
     
     const handleMyAsk = () => {
@@ -72,8 +76,17 @@ const NavigationBar = props => {
             }
         }
 
+    useEffect(() => {
+        if(username){
+            localStorage.setItem('username', username)
+        }
+        else{
+            setUsername(localStorage.getItem('username'))
+        }
         
-    return !getUsername() ? (
+    }, [])
+    
+    return !username ? (
         <div className = {classes.root}>
             <AppBar position="static" className={classes.appbar}>
             <Toolbar className={classes.toolbar} >
@@ -128,7 +141,7 @@ const NavigationBar = props => {
                         aria-haspopup="true"
                         onClick={handleToggle}
                         >
-                            <Avatar style={{marginLeft:5}} src='/broken-image.jpg'>{getUsername() ? getUsername()[0] : 'u'}</Avatar>
+                            <Avatar style={{marginLeft:5}} src='/broken-image.jpg'>{username ? username[0] : 'u'}</Avatar>
                             <ExpandMoreIcon/>
                     </Button>
                     <Popper open={open} anchorEl={anchorRef.current} placement='bottom' transition disablePortal style={{zIndex:2}}>
@@ -141,7 +154,11 @@ const NavigationBar = props => {
                                     <ClickAwayListener onClickAway={handleClose}>
                                         <Grid container>
                                             <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                                                <MenuItem onClick={handleMyAsk}>MyAskMeAnything</MenuItem>
+                                                <MenuItem>
+                                                    <Link href='/myaskmeanything' style={{textDecoration:'none'}}>
+                                                        MyAskMeAnything
+                                                    </Link>
+                                                </MenuItem>
                                                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                             </MenuList>
                                         </Grid>

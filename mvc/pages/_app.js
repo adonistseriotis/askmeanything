@@ -6,21 +6,11 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from './views/theme';
 import NavigationBar from './components/NavigationBar';
 import { useRouter } from 'next/dist/client/router';
-
-export async function getServerSideProps (context){
-  const res =  await axios.get('/auth/user',{withCredentials: true})
-  const username = res.data.username
-  return {
-      props: {
-          username: username
-      }
-  }
-}
+import { AppProps } from 'next/app';
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
   const router = useRouter();
-  console.log(router.pathname)
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
@@ -39,11 +29,21 @@ export default function MyApp(props) {
       <ThemeProvider theme={theme}>
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
-        {router.pathname === '/views/login' || router.pathname === '/views/signup' ? null : <NavigationBar username={props.username}/>}
+        {router.pathname === '/views/login' || router.pathname === '/views/signup' ? null : <NavigationBar username={pageProps.username}/>}
         <Component {...pageProps} />
       </ThemeProvider>
     </React.Fragment>
   );
+}
+
+export async function getServerSideProps (){
+  const res =  await axios.get('/auth/user',{withCredentials: true})
+  const username = res?.data?.username
+  return {
+      props: {
+          username: username
+      }
+  }
 }
 
 MyApp.propTypes = {

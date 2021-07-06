@@ -2,7 +2,7 @@ import Head from 'next/head';
 import * as React from 'react';
 
 const User = props => {
-  console.log('Props',props);
+  // console.log('Props',props);
   const { user } = props;
   return (
     <section className="page-section">

@@ -9,6 +9,7 @@ import {
 } from 'http';
 import { JwtAuthGuard } from 'src/auth/auth.jwtGuard';
 import { AuthService } from 'src/auth/auth.service';
+import { UsersService } from 'src/users/users.service';
 
 const url = require('url');
 
@@ -18,6 +19,7 @@ export class QuestionsController {
     private readonly questionService: QuestionsService, 
     private readonly analyticsService: AnalyticsService,
     private readonly authService: AuthService,
+    private readonly userService: UsersService,
     private readonly next: NextService) {}
 
   @Get('question')
@@ -58,7 +60,7 @@ export class QuestionsController {
     // console.log(questionFeed)
 
     const data = {
-      questionFeed: questionFeed,
+      questionFeed: user ? questionFeed : questionFeed.slice(0,10),
       questionsPerDay: questionsPerDay,
       questionsPerKeyword: questionsPerKeyword,
       username: user?.username 
@@ -69,15 +71,16 @@ export class QuestionsController {
 
   @Post('search')
   async search(@Body() body, @Req() req: IncomingMessage, @Res() res: Response) {
-    console.log('Body', body.filter)
+    // console.log('Body', body.filter)
     const questionFeed = await this.questionService.search(body.filter);
-    console.log(questionFeed)
+    // console.log(questionFeed)
     res.status(200).send( {
       questionFeed: questionFeed
     })
     // await this.next.render('/views/LandingView', data, req, res)
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('create-question')
   async getCreateQuestion(@Req() req: IncomingMessage, @Res() res: ServerResponse){
     const keywords = await this.questionService.getKeywords();
@@ -99,6 +102,7 @@ export class QuestionsController {
     }))
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('update-question')
   async getUpdateQuestion(@Query() query, @Req() req: IncomingMessage, @Res() res: ServerResponse){
     if(!Number.isInteger(parseInt(query.id)))
@@ -125,5 +129,21 @@ export class QuestionsController {
       pathname: '/question',
       query: { id: body.id}
     }))
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('myaskmeanything')
+  async myAskMeAnything(@Req() req: IncomingMessage, @Res() res: ServerResponse,  @Req() req1: Request){
+    const {username} = await this.authService.getUser(req1?.cookies?.Authentication)
+    const myQuestions = await this.userService.myQuestions(username);
+    const myAnswers = await this.userService.myAnswers(username);
+    const myQuestionsPerDay = await this.userService.myQuestionsPerDay(username)
+    
+    const data = {
+      myQuestionsPerDay: myQuestionsPerDay,
+      myAnswers: myAnswers,
+      myQuestions: myQuestions
+    }
+    await this.next.render('/views/MyAskMeAnything', data, req, res)
   }
 }

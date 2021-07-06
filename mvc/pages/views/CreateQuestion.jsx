@@ -56,7 +56,7 @@ const CreateQuestion = ({dbKeywords}) => {
 
     const handleSubmit = () => {
         // createQuestion(title, content, keywords)
-        console.log(keywords)
+        // console.log(keywords)
 
     }
     const handleEnter = (e) => {

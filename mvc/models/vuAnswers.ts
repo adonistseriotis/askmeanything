@@ -14,7 +14,7 @@ import {ViewEntity, ViewColumn} from "typeorm";
 export class vuAnswers {
 
     @ViewColumn()
-    id: number;
+    ID: number;
 
     @ViewColumn()
     body: String;

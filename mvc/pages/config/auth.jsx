@@ -16,7 +16,7 @@ export const logout = () => {
 export const getUsername = () => {
   axios.get('/auth/user', {withCredentials: true})
   .then(res => {
-    console.log(res.data.username)
+    // console.log(res.data.username)
     return res.data.username
   })
   .catch(() =>{

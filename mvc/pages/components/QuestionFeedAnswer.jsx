@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 // import {useHistory} from 'react-router-dom';
 import { Typography } from '@material-ui/core';
-import { Link } from '@material-ui/icons';
+import { Link } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root :{ 
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const QuestionFeedAnswer = ({answer}) => {
+    // console.log('SHeeeesh',answer)
     const classes = useStyles();
     // const history = useHistory();
     const [raised, setRaised] = useState(false);

@@ -8,6 +8,8 @@ import {
   } from 'http';
 import { JwtAuthGuard } from './auth.jwtGuard';
 
+const url = require('url');
+
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -58,5 +60,17 @@ export class AuthController {
     user.password = undefined
 
     res.status(200).send(user)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('/logout')
+  async logout(@Req() req : Request, @Res() res: Response) {
+    const cookie = await this.authService.getCookieForLogOut()
+    res.setHeader('Set-Cookie', cookie);
+    // return res.sendStatus(200);
+    console.log('Im here')
+    res.redirect(url.format({
+      pathname: '/'
+    }))
   }
 }

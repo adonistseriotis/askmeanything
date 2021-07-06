@@ -17,7 +17,7 @@ export async function login(username, password) {
         .then((response) => {
             // window.localStorage.setItem('token', response.data.token);
             axiosInstance.defaults.headers['Authorization'] = 'Bearer ' + response.data.token;
-            console.log("Successful login!", response)
+            // console.log("Successful login!", response)
             return response
         })
         .catch(error => {

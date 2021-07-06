@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 function GetQuestion(props) {
     const question = props.question;
-    console.log(props)
+    // console.log(props)
     // const [question, setQuestion] = useState(null);
     const [newAnswer, setNewAnswer] = useState('');
     // const [refresh, setRefresh] = useState(false);

@@ -12,7 +12,7 @@ export class QuestionsService {
     async findOne(id: number): Promise<vuQuestionAnswers> {
         try {
             const question = await this.manager.findOne(vuQuestionAnswers, {questionid: id} );
-            console.log('Service', question)
+            // console.log('Service', question)
             return question
         }
         catch(error){
@@ -24,7 +24,7 @@ export class QuestionsService {
         try{
             let returnableqid;
             const returnable = await this.manager.query("CALL public.sp_answer($1, $2, $3, $4)",[qid, body, username, returnableqid])
-            console.log('Returnable',returnable);
+            // console.log('Returnable',returnable);
             return returnable[0].returnableqid
         }
         catch(error){
@@ -44,7 +44,7 @@ export class QuestionsService {
 
     async search(filter: string): Promise<Array<vuQuestions>> {
         try{
-            console.log(filter)
+            // console.log(filter)
             const questionFeed = await this.manager.getRepository(vuQuestions).find({where: [{ search: Like(`%${filter}%`)}, { questiontitle: Like(`%${filter}%`)}, { questionbody: Like(`%${filter}%`)}]})
             return questionFeed
         }

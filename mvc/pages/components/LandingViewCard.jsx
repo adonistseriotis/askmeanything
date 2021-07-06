@@ -30,6 +30,7 @@ const cardStyle = {
       width: '50vw',
       margin: 10,
       justify:'center',
+      spacing: 0
   }
 }
 
@@ -50,7 +51,7 @@ const LandingViewCard = ({title, rawChartData=[], subtitle, chartType, chartTitl
             format = rawChartData.map(row => ([row.name, parseInt(row.count)]))
             format.unshift(['Keywords','Questions Per Keyword'])
             setChartData(format)
-            console.log(format)
+            // console.log(format)
           // })
           // .catch(err => console.log(err))
           break;

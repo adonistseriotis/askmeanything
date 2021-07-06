@@ -55,14 +55,16 @@ const SignUp = ({error, message}) =>{
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
-  
-    //   const onFirstNameChange = e => {
-    //       setFirstName(e.target.value);
-    //   }
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
 
-    //   const onLastNameChange = e => {
-    //       setLastName(e.target.value);
-    //   }
+      const onFirstNameChange = e => {
+          setFirstName(e.target.value);
+      }
+
+      const onLastNameChange = e => {
+          setLastName(e.target.value);
+      }
 
     const onEmailChange = e => {
         setEmail(e.target.value);
@@ -92,7 +94,7 @@ const SignUp = ({error, message}) =>{
             </Typography>
             <form className={classes.form} method='POST' action='/auth/signup' >
                 <Grid container spacing={2}>
-                    {/* <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                         autoComplete="fname"
                         name="firstName"
@@ -114,7 +116,7 @@ const SignUp = ({error, message}) =>{
                         name="lastName"
                         autoComplete="lname"
                         />
-                    </Grid> */}
+                    </Grid>
                      <Grid item xs={12}>
                         <TextField
                         variant="outlined"

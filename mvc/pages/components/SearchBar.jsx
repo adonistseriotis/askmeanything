@@ -29,18 +29,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchBar({setFeed, handleSearch, filter, setFilter}) {
+export default function SearchBar({setFeed, handleSearch, filter, setFilter, scroll}) {
   const classes = useStyles();
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(filter)
+    // console.log(filter)
 
     axios.post('/search', {
         filter: e.target.filter.value
     })
     .then(res => {
       setFeed(res.data.questionFeed)
+      scroll()
     })
     .catch(err => {
       console.log(err)

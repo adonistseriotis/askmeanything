@@ -33,7 +33,7 @@ const options = [
 ]
 
 const UpdateQuestion = ({question, DBkeywords}) => {
-    console.log(question)
+    // console.log(question)
  
     // oldtitle = 'adsfdsd'
     // oldcontent = 'asdfasdf'
