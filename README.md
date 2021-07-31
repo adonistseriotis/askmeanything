@@ -61,7 +61,7 @@ You can see below the instructions to run this project locally
    ```sh
    git clone https://github.com/adonistseriotis/askmeanything.git
    ```
-3. Install NPM packages
+3. Compose docker images
    ```sh
    docker-compose up    
    ```
