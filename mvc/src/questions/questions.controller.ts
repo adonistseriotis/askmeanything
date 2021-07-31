@@ -60,7 +60,7 @@ export class QuestionsController {
     // console.log(questionFeed)
 
     const data = {
-      questionFeed: user ? questionFeed : questionFeed.slice(0,10),
+      questionFeed: user && questionFeed ? questionFeed : questionFeed.slice(0,10),
       questionsPerDay: questionsPerDay,
       questionsPerKeyword: questionsPerKeyword,
       username: user?.username 

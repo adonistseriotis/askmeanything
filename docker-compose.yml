@@ -14,7 +14,7 @@ services:
         volumes:
             - $HOME/Documents/SaaS/soa/docker-volume
             - pg_data:/var/lib/postgresql/data/
-            - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+            - ./soa/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
         healthcheck:
             test: ["CMD", "curl", "-fk", "https://localhost:54320"]
             interval: 300s
@@ -23,7 +23,7 @@ services:
     
     dal:
         container_name: data_access_layer
-        build: ./data-access-layer
+        build: ./soa/data-access-layer
         volumes:
             - .:/usr/app/
             - /usr/app/node_modules
@@ -34,7 +34,7 @@ services:
 
     service_bus:
         container_name: service_bus
-        build: ./service-bus
+        build: ./soa/service-bus
         volumes:
             - .:/usr/app/
             - /usr/app/node_modules
@@ -45,7 +45,7 @@ services:
 
     authenticator:
         container_name: authenticator
-        build: ./services/authenticator
+        build: ./soa/services/authenticator
         volumes:
             - .:/usr/app/
             - /usr/app/node_modules
@@ -57,7 +57,7 @@ services:
 
     question_management:
         container_name: question_management
-        build: ./services/question-management
+        build: ./soa/services/question-management
         volumes:
             - .:/usr/app/
             - /usr/app/node_modules
@@ -69,7 +69,7 @@ services:
 
     analytics:
         container_name: analytics
-        build: ./services/analytics
+        build: ./soa/services/analytics
         volumes:
             - .:/usr/app/
             - /usr/app/node_modules
@@ -81,7 +81,7 @@ services:
     
     frontend:
         container_name: frontend
-        build: ./front-end
+        build: ./soa/front-end
         volumes:
             - .:/usr/app
             - /usr/app/node_modules
@@ -91,5 +91,16 @@ services:
         restart: on-failure
         depends_on: 
             - "dal"
+
+    mvc:
+        container_name: mvc_askmeanything
+        build: ./mvc
+        volumes:
+            - .:/usr/app/
+            - /usr/app/node_modules
+        network_mode: "host"
+        depends_on: 
+            - "db"
+        command: ["./wait-for-it.sh", "localhost:54320", "--", "yarn", "start"]
 volumes:
   pg_data:

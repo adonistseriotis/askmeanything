@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+    
+    db:
+        container_name: pg_container_askmeanythang
+        image: postgres
+        restart: always
+        environment:
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+            POSTGRES_DB: ${DB_NAME}
+        ports:
+            - "54320:5432"
+        volumes:
+            - $HOME/Documents/SaaS/soa/docker-volume
+            - pg_data:/var/lib/postgresql/data/
+            - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+        healthcheck:
+            test: ["CMD", "curl", "-fk", "https://localhost:54320"]
+            interval: 300s
+            timeout: 400s
+            retries: 10
+    
+    mvc:
+        container_name: mvc_askmeanything
+        build: .
+        volumes:
+            - .:/usr/app/
+            - /usr/app/node_modules
+        network_mode: "host"
+        depends_on: 
+            - "db"
+        command: ["./wait-for-it.sh", "localhost:54320", "--", "node", "index.js"]

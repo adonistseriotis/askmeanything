@@ -148,7 +148,7 @@ function Login({serverError, message}) {
           </Button>
           <Grid container>
             <Grid item>
-              <Link color="secondary" href="/signup" variant="inherit">
+              <Link color="secondary" href="/auth/signup" variant="inherit">
                 <Typography>
                   {"Don't have an account? Sign Up"}
                 </Typography>
