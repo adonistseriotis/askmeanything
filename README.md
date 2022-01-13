@@ -6,7 +6,7 @@
   <h3 align="center">Ask Me Anything</h3>
 
   <p align="center">
-    Forum built on react and node for the purposes of NTUA school project
+    Forum built on react and node for the purposes of ECE NTUA assignment
     <br />
 </p>
 
@@ -17,12 +17,12 @@ This project is built for the course Software As A Service of NTUA University. A
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [React](https://reactjs.org/)
 * [Express](https://expressjs.com/)
 * [Nest](https://nestjs.com/)
 * [Next](https://jquery.com)
-* [Passport](http://www.passportjs.org/)
+* [Passport](https://www.passportjs.org/)
+* [Docker](https://www.docker.com/)
 
 
 <!-- GETTING STARTED -->
@@ -32,7 +32,7 @@ You can see below the instructions to run this project locally
 
 ### Prerequisites
 
-
+For Linux:
 * docker
   ```sh
   sudo apt-get update
